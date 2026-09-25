@@ -240,15 +240,6 @@
       display: inline-block;
       margin-top: 8px;
     }
-    .otp-info {
-      font-size: 12px;
-      color: #d4af37;
-      background: rgba(212,175,55,0.1);
-      padding: 8px;
-      border-radius: 6px;
-      text-align: center;
-      margin-bottom: 12px;
-    }
   </style>
 </head>
 <body>
@@ -294,14 +285,16 @@
           <label>Mobile Number</label>
           <input type="tel" id="userPhone" class="form-control" placeholder="10-digit mobile number" maxlength="10">
         </div>
-        <button class="submit-btn" onclick="sendOTP()">Send OTP</button>
+        <!-- Recaptcha Container -->
+        <div id="recaptcha-container"></div>
+        <button class="submit-btn" id="sendOtpBtn" onclick="sendOTP()">Send OTP</button>
       </div>
       <div id="step-otp" style="display: none;">
         <div class="modal-title">Verify OTP</div>
-        <div class="otp-info">Demo / Testing OTP Code: <b>1234</b></div>
+        <p style="font-size:12px; color:#aaa; text-align:center; margin-bottom:10px;">Enter the 6-digit OTP sent to your phone</p>
         <div class="form-group">
-          <label>Enter 4-digit OTP</label>
-          <input type="text" id="otpInput" class="form-control" placeholder="1234" maxlength="4">
+          <label>Enter 6-digit OTP</label>
+          <input type="text" id="otpInput" class="form-control" placeholder="123456" maxlength="6">
         </div>
         <button class="submit-btn" onclick="verifyOTP()">Verify & Continue</button>
       </div>
@@ -361,6 +354,75 @@
       </div>
     </div>
   </div>
+
+  <!-- Firebase Scripts Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    // Your Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8H2QNMLsu-FrFhFRwf5MXz6KsoRRmXL0",
+      authDomain: "menu-74bc7.firebaseapp.com",
+      projectId: "menu-74bc7",
+      storageBucket: "menu-74bc7.firebasestorage.app",
+      messagingSenderId: "419235969075",
+      appId: "1:419235969075:web:c4e11d75a7aabbe3b98b46",
+      measurementId: "G-QEG8YDF6TN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Initialize Recaptcha
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      'size': 'invisible'
+    });
+
+    // Real Firebase OTP Sender Function
+    window.sendFirebaseOTP = function(phone) {
+      const fullPhoneNumber = "+91" + phone; // Adding India Country Code (+91)
+      const appVerifier = window.recaptchaVerifier;
+
+      signInWithPhoneNumber(auth, fullPhoneNumber, appVerifier)
+        .then((confirmationResult) => {
+          window.confirmationResult = confirmationResult;
+          document.getElementById('step-phone').style.display = 'none';
+          document.getElementById('step-otp').style.display = 'block';
+          alert("OTP has been sent to " + fullPhoneNumber);
+        }).catch((error) => {
+          console.error("SMS Error:", error);
+          alert("Failed to send OTP: " + error.message);
+        });
+    };
+
+    // Verify OTP Code
+    window.verifyFirebaseOTP = function(otp) {
+      if (!window.confirmationResult) {
+        alert("Please request OTP first.");
+        return;
+      }
+      window.confirmationResult.confirm(otp).then((result) => {
+        const phone = document.getElementById('userPhone').value;
+        currentUser = JSON.parse(localStorage.getItem('user_' + phone)) || {
+          phone: phone,
+          name: '',
+          dob: '',
+          marital: 'Single',
+          anniversary: '',
+          spouseDob: '',
+          points: 0,
+          visits: 0
+        };
+
+        closeModal('authModal');
+        document.getElementById('userBtn').innerText = currentUser.name ? currentUser.name : 'My Profile';
+        openProfileModal();
+      }).catch((error) => {
+        alert("Invalid OTP code. Please try again.");
+      });
+    };
+  </script>
 
   <script>
     // Verified High Quality Dish Images
@@ -475,8 +537,7 @@
     function sendOTP() {
       const phone = document.getElementById('userPhone').value;
       if (phone.length === 10) {
-        document.getElementById('step-phone').style.display = 'none';
-        document.getElementById('step-otp').style.display = 'block';
+        window.sendFirebaseOTP(phone);
       } else {
         alert('Please enter a valid 10-digit mobile number.');
       }
@@ -484,24 +545,10 @@
 
     function verifyOTP() {
       const otp = document.getElementById('otpInput').value;
-      if (otp === '1234' || otp.length === 4) {
-        const phone = document.getElementById('userPhone').value;
-        currentUser = JSON.parse(localStorage.getItem('user_' + phone)) || {
-          phone: phone,
-          name: '',
-          dob: '',
-          marital: 'Single',
-          anniversary: '',
-          spouseDob: '',
-          points: 0,
-          visits: 0
-        };
-        
-        closeModal('authModal');
-        document.getElementById('userBtn').innerText = currentUser.name ? currentUser.name : 'My Profile';
-        openProfileModal();
+      if (otp.length === 6) {
+        window.verifyFirebaseOTP(otp);
       } else {
-        alert('Invalid OTP. Please enter 1234.');
+        alert('Please enter a valid 6-digit OTP code.');
       }
     }
 
