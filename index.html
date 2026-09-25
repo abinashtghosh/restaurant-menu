@@ -6,64 +6,62 @@
   <title>Digital Restaurant Menu</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; color: #333; padding-bottom: 50px; }
-    header { background: #d32f2f; color: white; text-align: center; padding: 25px 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    header h1 { font-size: 28px; margin-bottom: 5px; }
-    header p { font-size: 14px; opacity: 0.9; }
+    body { font-family: 'Segoe UI', Roboto, sans-serif; background-color: #f4f6f8; color: #333; padding-bottom: 50px; }
+    header { background: #111; color: white; text-align: center; padding: 30px 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+    header h1 { font-size: 32px; color: #ff9800; font-weight: 700; margin-bottom: 5px; }
+    header p { font-size: 15px; color: #ccc; }
 
-    .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+    .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
 
-    /* Category Filter Tabs */
-    .categories { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; margin-bottom: 20px; }
-    .cat-btn { background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; white-space: nowrap; transition: 0.3s; }
-    .cat-btn:hover, .cat-btn.active { background: #d32f2f; color: #fff; border-color: #d32f2f; }
+    /* Category Buttons */
+    .categories { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0 20px 0; }
+    .cat-btn { background: #fff; border: 1px solid #ccc; padding: 8px 18px; border-radius: 25px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.3s ease; }
+    .cat-btn:hover, .cat-btn.active { background: #ff9800; color: #fff; border-color: #ff9800; }
 
-    /* Section Headers */
-    .section-title { font-size: 22px; margin: 25px 0 15px; border-bottom: 2px solid #d32f2f; display: inline-block; padding-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+    /* Category Title */
+    .section-title { font-size: 22px; margin: 30px 0 15px; text-transform: uppercase; border-left: 4px solid #ff9800; padding-left: 10px; color: #222; }
 
-    /* Menu Cards */
-    .menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
-    @media(min-width: 600px) { .menu-grid { grid-template-columns: 1fr 1fr; } }
+    /* Grid Layout */
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
 
-    .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; position: relative; }
-    .card-img { width: 100%; height: 160px; object-fit: cover; background: #eee; }
-    .card-body { padding: 15px; flex: 1; }
+    /* Card Design */
+    .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; flex-direction: column; position: relative; transition: transform 0.2s; }
+    .card:hover { transform: translateY(-4px); }
     
-    .badge { position: absolute; top: 10px; right: 10px; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; color: white; text-transform: uppercase; }
+    .card-img-container { width: 100%; height: 180px; background: #e0e0e0; overflow: hidden; position: relative; }
+    .card-img { width: 100%; height: 100%; object-fit: cover; }
+
+    .badge { position: absolute; top: 12px; right: 12px; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; color: white; text-transform: uppercase; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
     .badge-veg { background-color: #2e7d32; }
     .badge-nonveg { background-color: #c62828; }
 
-    .item-name { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
-    .item-desc { font-size: 13px; color: #666; margin-bottom: 12px; height: 36px; overflow: hidden; }
-    
-    .card-footer { display: flex; justify-content: space-between; align-items: center; padding: 0 15px 15px; }
-    .price { font-size: 18px; font-weight: bold; color: #2e7d32; }
-    
-    .order-btn { background: #25d366; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; text-decoration: none; font-size: 13px; }
+    .card-body { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .item-name { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 6px; }
+    .item-desc { font-size: 13px; color: #666; margin-bottom: 15px; line-height: 1.4; }
+
+    .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+    .price { font-size: 20px; font-weight: 700; color: #2e7d32; }
+
+    .order-btn { background: #25d366; color: white; border: none; padding: 9px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; text-decoration: none; font-size: 13px; transition: background 0.3s; }
     .order-btn:hover { background: #1eb954; }
 
-    .loading { text-align: center; padding: 40px; font-size: 18px; color: #777; }
+    .loading { text-align: center; padding: 50px; font-size: 18px; color: #666; }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Delicious Restaurant</h1>
-    <p>Fresh & Quality Food Delivered</p>
+    <h1>Digital Menu</h1>
+    <p>Select your favorite dishes and order directly</p>
   </header>
 
   <div class="container">
-    <!-- Category Tabs -->
-    <div class="categories">
-      <button class="cat-btn active" onclick="filterMenu('all')">All Items</button>
-      <button class="cat-btn" onclick="filterMenu('veg')">Veg</button>
-      <button class="cat-btn" onclick="filterMenu('non-veg')">Non-Veg</button>
-      <button class="cat-btn" onclick="filterMenu('dessert')">Desserts</button>
-      <button class="cat-btn" onclick="filterMenu('softdrinks')">Soft Drinks</button>
+    <div class="categories" id="category-buttons">
+      <button class="cat-btn active" onclick="filterMenu('all', this)">All Items</button>
     </div>
 
     <div id="menu-container">
-      <div class="loading">Loading tasty menu...</div>
+      <div class="loading">Loading menu items...</div>
     </div>
   </div>
 
@@ -85,52 +83,88 @@
     const db = getFirestore(app);
 
     let allItems = [];
-    // Apne WhatsApp number ko yahan replace karein (with country code, e.g. 919876543210)
-    const whatsappNumber = "919876543210"; 
+    const whatsappNumber = "919876543210"; // Apna WhatsApp Number Yahan Daalein
+
+    // Default High-Quality Food Images
+    const defaultImages = {
+      default: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80",
+      starters: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&q=80",
+      veg: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500&q=80",
+      "non-veg": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80",
+      dessert: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500&q=80",
+      softdrinks: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500&q=80"
+    };
 
     async function loadMenu() {
       try {
         const querySnapshot = await getDocs(collection(db, "menuItems"));
         allItems = [];
+        const categoriesSet = new Set();
+
         querySnapshot.forEach((doc) => {
-          allItems.push({ id: doc.id, ...doc.data() });
+          const data = doc.data();
+          allItems.push({ id: doc.id, ...data });
+          if (data.category) {
+            categoriesSet.add(data.category.trim());
+          }
         });
+
+        setupCategoryButtons(Array.from(categoriesSet));
         renderMenu(allItems);
       } catch (err) {
         console.error(err);
-        document.getElementById('menu-container').innerHTML = '<div class="loading">Error loading menu.</div>';
+        document.getElementById('menu-container').innerHTML = '<div class="loading">Error loading menu. Check Firebase rules.</div>';
       }
+    }
+
+    function setupCategoryButtons(categories) {
+      const btnContainer = document.getElementById('category-buttons');
+      let buttonsHtml = `<button class="cat-btn active" onclick="filterMenu('all', this)">All Items</button>`;
+      
+      categories.forEach(cat => {
+        buttonsHtml += `<button class="cat-btn" onclick="filterMenu('${cat}', this)">${cat}</button>`;
+      });
+
+      btnContainer.innerHTML = buttonsHtml;
     }
 
     function renderMenu(items) {
       const container = document.getElementById('menu-container');
       if (items.length === 0) {
-        container.innerHTML = '<div class="loading">No items available in this category.</div>';
+        container.innerHTML = '<div class="loading">No items available.</div>';
         return;
       }
 
-      // Grouping by Category
-      const categories = ['veg', 'non-veg', 'dessert', 'softdrinks'];
+      // Grouping by Category dynamically
+      const grouped = {};
+      items.forEach(item => {
+        const cat = item.category ? item.category.trim() : 'Other';
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(item);
+      });
+
       let html = '';
+      for (const cat in grouped) {
+        html += `<h2 class="section-title">${cat}</h2><div class="menu-grid">`;
+        
+        grouped[cat].forEach(item => {
+          const catKey = (item.category || '').toLowerCase().trim();
+          const imgUrl = item.imageUrl && item.imageUrl.trim() !== '' 
+            ? item.imageUrl 
+            : (defaultImages[catKey] || defaultImages.default);
 
-      categories.forEach(cat => {
-        const catItems = items.filter(i => (i.category || '').toLowerCase() === cat);
-        if (catItems.length > 0) {
-          html += `<h2 class="section-title">${cat.toUpperCase()}</h2><div class="menu-grid">`;
-          catItems.forEach(item => {
-            const defaultImg = "https://via.placeholder.com/300x160?text=Food+Item";
-            const imgUrl = item.imageUrl || defaultImg;
-            const isVeg = item.veg !== undefined ? item.veg : (cat === 'veg');
-            
-            // Order via WhatsApp message link
-            const orderMsg = encodeURIComponent(`Hello, I want to order: ${item.name} (₹${item.price})`);
-            const waLink = `https://wa.me/${whatsappNumber}?text=${orderMsg}`;
+          const isVeg = item.veg !== undefined ? item.veg : true;
+          const orderMsg = encodeURIComponent(`Hello! I want to order: ${item.name} (Price: ₹${item.price})`);
+          const waLink = `https://wa.me/${whatsappNumber}?text=${orderMsg}`;
 
-            html += `
-              <div class="card">
+          html += `
+            <div class="card">
+              <div class="card-img-container">
                 <span class="badge ${isVeg ? 'badge-veg' : 'badge-nonveg'}">${isVeg ? 'Veg' : 'Non-Veg'}</span>
-                <img src="${imgUrl}" class="card-img" alt="${item.name}">
-                <div class="card-body">
+                <img src="${imgUrl}" class="card-img" alt="${item.name}" onerror="this.src='${defaultImages.default}'">
+              </div>
+              <div class="card-body">
+                <div>
                   <div class="item-name">${item.name}</div>
                   <div class="item-desc">${item.description || ''}</div>
                 </div>
@@ -139,23 +173,24 @@
                   <a href="${waLink}" target="_blank" class="order-btn">Order Now</a>
                 </div>
               </div>
-            `;
-          });
-          html += `</div>`;
-        }
-      });
+            </div>
+          `;
+        });
+
+        html += `</div>`;
+      }
 
       container.innerHTML = html;
     }
 
-    window.filterMenu = function(category) {
+    window.filterMenu = function(category, btnElement) {
       document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+      btnElement.classList.add('active');
 
       if (category === 'all') {
         renderMenu(allItems);
       } else {
-        const filtered = allItems.filter(i => (i.category || '').toLowerCase() === category);
+        const filtered = allItems.filter(i => i.category && i.category.trim() === category);
         renderMenu(filtered);
       }
     };
