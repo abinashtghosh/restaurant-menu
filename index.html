@@ -12,10 +12,11 @@
     header h1 { font-size: 30px; color: #ff9800; font-weight: 700; margin-bottom: 5px; }
     header p { font-size: 14px; color: #ccc; }
 
-    /* Special Banner Style */
-    .banner-container { max-width: 900px; margin: 20px auto 0; padding: 0 15px; }
-    .special-banner { background: linear-gradient(135deg, #ff8a00, #e52e71); color: white; border-radius: 12px; padding: 15px 20px; display: flex; align-items: center; gap: 20px; box-shadow: 0 4px 15px rgba(229, 46, 113, 0.3); }
-    .banner-img { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid white; flex-shrink: 0; }
+    /* Special Banner Auto-Scroll Slider */
+    .banner-container { max-width: 900px; margin: 20px auto 0; padding: 0 15px; position: relative; overflow: hidden; }
+    .banner-slider { display: flex; transition: transform 0.6s ease-in-out; }
+    .special-banner { min-width: 100%; background: linear-gradient(135deg, #ff8a00, #e52e71); color: white; border-radius: 12px; padding: 15px 20px; display: flex; align-items: center; gap: 20px; box-shadow: 0 4px 15px rgba(229, 46, 113, 0.3); }
+    .banner-img { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid white; flex-shrink: 0; background: #fff; }
     .banner-text h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
     .banner-text p { font-size: 13px; opacity: 0.95; line-height: 1.3; }
 
@@ -59,8 +60,10 @@
     <p>Select your favorite dishes and order directly</p>
   </header>
 
-  <!-- Dynamic Celebration Banner -->
-  <div class="banner-container" id="banner-area"></div>
+  <!-- Dynamic Celebration Auto-Scroll Banner -->
+  <div class="banner-container" id="banner-container">
+    <div class="banner-slider" id="banner-slider"></div>
+  </div>
 
   <div class="container">
     <div class="categories" id="category-buttons">
@@ -98,30 +101,36 @@
 
     const defaultImages = {
       default: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80",
+      customer: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&q=80",
       veg: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500&q=80",
       "non-veg": "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80",
       dessert: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500&q=80",
       softdrink: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&q=80"
     };
 
-    // Load Banner Data (Handles both lowercase and capitalized keys)
+    // Load Banner Data & Auto-Scroll Slider Logic
     async function loadCelebrationBanner() {
       try {
         const querySnapshot = await getDocs(collection(db, "celebrations"));
-        const bannerArea = document.getElementById('banner-area');
+        const bannerSlider = document.getElementById('banner-slider');
+        const bannerContainer = document.getElementById('banner-container');
         
+        let bannersHtml = '';
+        let bannerCount = 0;
+
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          
           const isActive = data.active !== undefined ? data.active : data.Active;
-          const title = data.title || data.Title || 'Happy Celebration!';
-          const message = data.message || data.Message || 'Wishing you a fantastic day ahead!';
-          const imageUrl = data.imageUrl || data.ImageUrl || defaultImages.default;
 
           if (isActive !== false) {
-            bannerArea.innerHTML = `
+            bannerCount++;
+            const title = data.title || data.Title || 'Happy Celebration!';
+            const message = data.message || data.Message || 'Wishing you a fantastic day ahead!';
+            const img = data.imageUrl || data.ImageUrl || data.ImageURL || defaultImages.customer;
+
+            bannersHtml += `
               <div class="special-banner">
-                <img src="${imageUrl}" class="banner-img" alt="Celebration" onerror="this.src='${defaultImages.default}'">
+                <img src="${img}" class="banner-img" alt="Customer Photo" onerror="this.src='${defaultImages.customer}'">
                 <div class="banner-text">
                   <h3>🎉 ${title}</h3>
                   <p>${message}</p>
@@ -130,6 +139,23 @@
             `;
           }
         });
+
+        if (bannerCount === 0) {
+          bannerContainer.style.display = 'none';
+          return;
+        }
+
+        bannerSlider.innerHTML = bannersHtml;
+
+        // Auto Scroll Slider Logic (Swipes every 3.5 seconds if multiple banners exist)
+        if (bannerCount > 1) {
+          let currentIndex = 0;
+          setInterval(() => {
+            currentIndex = (currentIndex + 1) % bannerCount;
+            bannerSlider.style.transform = `translateX(-${currentIndex * 100}%)`;
+          }, 3500);
+        }
+
       } catch (err) {
         console.error("Celebration banner error:", err);
       }
@@ -177,7 +203,13 @@
             ? item.imageUrl 
             : (defaultImages[catKey] || defaultImages.default);
 
-          const isVeg = item.veg !== undefined ? item.veg : true;
+          let isVeg = true;
+          if (catKey === 'non-veg' || catKey === 'non veg') {
+            isVeg = false;
+          } else if (item.veg !== undefined) {
+            isVeg = Boolean(item.veg);
+          }
+
           const displayPrice = item.price !== undefined ? item.price : 0;
           const orderMsg = encodeURIComponent(`Hello! I want to order: ${item.name} (Price: ₹${displayPrice})`);
           const waLink = `https://wa.me/${whatsappNumber}?text=${orderMsg}`;
