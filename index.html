@@ -240,6 +240,15 @@
       display: inline-block;
       margin-top: 8px;
     }
+    .otp-info {
+      font-size: 12px;
+      color: #d4af37;
+      background: rgba(212,175,55,0.1);
+      padding: 8px;
+      border-radius: 6px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
   </style>
 </head>
 <body>
@@ -289,7 +298,7 @@
       </div>
       <div id="step-otp" style="display: none;">
         <div class="modal-title">Verify OTP</div>
-        <p style="font-size: 12px; color: #aaa; text-align: center; margin-bottom: 12px;">OTP sent to your mobile number</p>
+        <div class="otp-info">Demo / Testing OTP Code: <b>1234</b></div>
         <div class="form-group">
           <label>Enter 4-digit OTP</label>
           <input type="text" id="otpInput" class="form-control" placeholder="1234" maxlength="4">
@@ -343,9 +352,8 @@
         <button type="submit" class="submit-btn">Save Profile</button>
       </form>
 
-      <!-- Simulated Bill Entry for Loyalty Testing -->
       <div style="margin-top: 15px; border-top: 1px solid rgba(212,175,55,0.2); padding-top: 10px;">
-        <div style="font-size: 11px; color: #aaa; margin-bottom: 5px;">Add Recent Bill (Demo Points Multiplier)</div>
+        <div style="font-size: 11px; color: #aaa; margin-bottom: 5px;">Add Recent Bill (Points Calculation Test)</div>
         <div style="display: flex; gap: 8px;">
           <input type="number" id="billAmount" class="form-control" placeholder="Bill Amount (₹)">
           <button class="submit-btn" style="margin:0; width: 100px;" onclick="addBillPoints()">Add Bill</button>
@@ -355,14 +363,14 @@
   </div>
 
   <script>
-    // Exact HD Dishes Data & Clean Fallbacks
+    // Verified High Quality Dish Images
     const menuItems = [
       {
         name: "Butter Chicken",
         category: "Non-Veg",
         price: 369,
         description: "Rich creamy tomato gravy with juicy charcoal-grilled chicken.",
-        imageUrl: "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=600&q=80",
+        imageUrl: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&q=80",
         veg: false
       },
       {
@@ -386,7 +394,7 @@
         category: "Soft Drinks",
         price: 80,
         description: "Refreshing fizzy drink made with fresh lemon and mint.",
-        imageUrl: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=600&q=80",
+        imageUrl: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&q=80",
         veg: true
       }
     ];
@@ -493,7 +501,7 @@
         document.getElementById('userBtn').innerText = currentUser.name ? currentUser.name : 'My Profile';
         openProfileModal();
       } else {
-        alert('Invalid OTP. Please use 1234.');
+        alert('Invalid OTP. Please enter 1234.');
       }
     }
 
