@@ -1,19 +1,61 @@
-<script type="module">
-  // Firebase configuration paste karein
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Menu</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }
+    h1 { text-align: center; color: #333; }
+    .menu-container { max-width: 600px; margin: 0 auto; }
+    .menu-card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .price { font-weight: bold; color: #e44d26; }
+  </style>
+</head>
+<body>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyD8H2QNMLsu-FrFhFRwf5MXz6KsoRRmXL0",
-    authDomain: "menu-74bc7.firebaseapp.com",
-    projectId: "menu-74bc7",
-    storageBucket: "menu-74bc7.firebasestorage.app",
-    messagingSenderId: "419235969075",
-    appId: "1:419235969075:web:c4e11d75a7aabbe3b98b46",
-    measurementId: "G-QEG8YDF6TN"
-  };
+  <h1>Restaurant Menu</h1>
+  <div id="menu-list" class="menu-container">Loading menu...</div>
 
-  // Firebase initialize karein
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-</script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8H2QNMLsu-FrFhFRwf5MXz6KsoRRmXL0",
+      authDomain: "menu-74bc7.firebaseapp.com",
+      projectId: "menu-74bc7",
+      storageBucket: "menu-74bc7.firebasestorage.app",
+      messagingSenderId: "419235969075",
+      appId: "1:419235969075:web:c4e11d75a7aabbe3b98b46",
+      measurementId: "G-QEG8YDF6TN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function fetchMenu() {
+      const menuList = document.getElementById('menu-list');
+      try {
+        const querySnapshot = await getDocs(collection(db, "menuItems"));
+        menuList.innerHTML = ''; 
+        querySnapshot.forEach((doc) => {
+          const item = doc.data();
+          menuList.innerHTML += `
+            <div class="menu-card">
+              <h3>${item.name || 'Unnamed Item'}</h3>
+              <p>${item.description || ''}</p>
+              <p class="price">₹${item.price || 0}</p>
+            </div>
+          `;
+        });
+      } catch (error) {
+        console.error("Error fetching menu:", error);
+        menuList.innerHTML = 'Error loading menu items.';
+      }
+    }
+
+    fetchMenu();
+  </script>
+</body>
+</html>
