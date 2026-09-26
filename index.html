@@ -9,40 +9,50 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
+
     body {
-      background-color: #121212;
+      background-color: #0d0d0d;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      color: #ffffff;
     }
+
+    /* Outer Modal Card */
     .modal-container {
-      background-color: #1c1a17;
-      border: 1px solid #d4af37;
-      border-radius: 16px;
-      padding: 24px;
+      background-color: #161513;
+      border: 1.5px solid #d4af37;
+      border-radius: 20px;
+      padding: 28px 20px;
       width: 90%;
-      max-width: 440px;
+      max-width: 420px;
       text-align: center;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.8);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.85);
       position: relative;
-      color: #fff;
     }
+
     .close-btn {
       position: absolute;
-      top: 16px;
-      right: 16px;
+      top: 14px;
+      right: 18px;
       background: none;
       border: none;
-      color: #aaa;
-      font-size: 20px;
+      color: #888888;
+      font-size: 22px;
       cursor: pointer;
+      line-height: 1;
     }
+
+    .close-btn:hover {
+      color: #ffffff;
+    }
+
     .header-title {
-      font-size: 20px;
-      font-weight: bold;
+      font-size: 21px;
+      font-weight: 700;
       color: #ffd700;
       margin-bottom: 6px;
       display: flex;
@@ -50,69 +60,85 @@
       justify-content: center;
       gap: 8px;
     }
+
     .header-subtitle {
       font-size: 13px;
-      color: #ccc;
-      margin-bottom: 20px;
+      color: #cccccc;
+      margin-bottom: 24px;
     }
+
+    /* Canvas & Wheel Container */
     .wheel-container {
       position: relative;
       width: 320px;
       height: 320px;
-      margin: 0 auto 20px auto;
+      margin: 0 auto 24px auto;
     }
+
     #wheelCanvas {
       width: 320px;
       height: 320px;
       border-radius: 50%;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
     }
+
+    /* Top Red Pointer Arrow */
     .pointer {
       position: absolute;
-      top: -10px;
+      top: -12px;
       left: 50%;
       transform: translateX(-50%);
       width: 0;
       height: 0;
       border-left: 14px solid transparent;
       border-right: 14px solid transparent;
-      border-top: 24px solid #ff4d4d;
+      border-top: 26px solid #ff4d4d;
       z-index: 10;
+      filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.6));
     }
+
+    /* Action Button */
     .spin-btn {
       background: linear-gradient(180deg, #ff7a29 0%, #e64a19 100%);
-      color: #fff;
+      color: #ffffff;
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 700;
       border: none;
-      padding: 12px 36px;
+      padding: 12px 42px;
       border-radius: 25px;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(230, 74, 25, 0.4);
-      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(230, 74, 25, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      letter-spacing: 0.5px;
     }
+
     .spin-btn:hover {
-      transform: scale(1.05);
+      transform: scale(1.04);
+      box-shadow: 0 6px 20px rgba(230, 74, 25, 0.6);
     }
+
     .spin-btn:disabled {
-      background: #555;
+      background: #444444;
       cursor: not-allowed;
       box-shadow: none;
       transform: none;
     }
+
+    /* Result Notification */
     .result-msg {
-      margin-top: 16px;
+      margin-top: 18px;
       font-size: 14px;
       color: #ffd700;
-      min-height: 20px;
+      min-height: 24px;
       font-weight: 600;
+      line-height: 1.4;
+      padding: 0 10px;
     }
   </style>
 </head>
 <body>
 
   <div class="modal-container">
-    <button class="close-btn">&times;</button>
+    <button class="close-btn" id="closeBtn">&times;</button>
     <div class="header-title">🎡 Real Lucky Spin & Win</div>
     <div class="header-subtitle">Spin the wheel to win instant free items or offers!</div>
 
@@ -126,81 +152,85 @@
   </div>
 
   <script>
-    // Configuration Options
+    // Embedded SVG Data URIs for Icons (Prevents external image loading errors)
+    const iconData = {
+      chai: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="%23d32f2f" d="M16 22h32l-4 34H20z"/><path fill="%23ffa726" d="M12 16h40v6H12z"/><path fill="%23ffffff" d="M22 8c2 2 2 4 0 6s-2 4 0 6M32 8c2 2 2 4 0 6s-2 4 0 6M42 8c2 2 2 4 0 6s-2 4 0 6" stroke="%23d32f2f" stroke-width="2" stroke-linecap="round"/></svg>',
+      icecream: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="%23ff80ab" d="M32 6a16 16 0 0 0-16 16c0 4 2 8 6 10h20c4-2 6-6 6-10A16 16 0 0 0 32 6z"/><path fill="%23ffb74d" d="M20 32l12 28 12-28z"/></svg>',
+      salad: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="%2366bb6a" d="M10 28a22 22 0 0 0 44 0H10z"/><circle cx="22" cy="20" r="6" fill="%23e53935"/><circle cx="42" cy="22" r="5" fill="%23fbc02d"/><path fill="%234caf50" d="M30 12c-4 0-8 4-8 8h16c0-4-4-8-8-8z"/></svg>',
+      emoji: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="%23fbc02d"/><circle cx="22" cy="26" r="4" fill="%23424242"/><circle cx="42" cy="26" r="4" fill="%23424242"/><path fill="none" stroke="%23424242" stroke-width="3.5" stroke-linecap="round" d="M20 46c7-7 17-7 24 0"/></svg>'
+    };
+
+    // Wheel Items Configuration
     const items = [
-      { label: "Kulhad Chai", lines: ["Kulhad Chai"], color: "#ffffff", textColor: "#d32f2f", iconSrc: "kulhad.png" },
-      { label: "Ice Cream", lines: ["Ice Cream"], color: "#ffeb3b", textColor: "#d32f2f", iconSrc: "icecream.png" },
-      { label: "Veg Salad", lines: ["Veg Salad"], color: "#ffffff", textColor: "#d32f2f", iconSrc: "salad.png" },
-      { label: "Better Luck Next Time", lines: ["Better Luck", "Next Time"], color: "#ffeb3b", textColor: "#d32f2f", iconSrc: "emoji.png" },
-      { label: "Kulhad Chai", lines: ["Kulhad Chai"], color: "#ffffff", textColor: "#d32f2f", iconSrc: "kulhad.png" },
-      { label: "Ice Cream", lines: ["Ice Cream"], color: "#ffeb3b", textColor: "#d32f2f", iconSrc: "icecream.png" },
-      { label: "Veg Salad", lines: ["Veg Salad"], color: "#ffffff", textColor: "#d32f2f", iconSrc: "salad.png" },
-      { label: "Better Luck Next Time", lines: ["Better Luck", "Next Time"], color: "#ffeb3b", textColor: "#d32f2f", iconSrc: "emoji.png" }
+      { label: "Kulhad Chai", lines: ["Kulhad Chai"], color: "#ffffff", textColor: "#d32f2f", iconKey: "chai" },
+      { label: "Ice Cream", lines: ["Ice Cream"], color: "#ffeb3b", textColor: "#d32f2f", iconKey: "icecream" },
+      { label: "Veg Salad", lines: ["Veg Salad"], color: "#ffffff", textColor: "#d32f2f", iconKey: "salad" },
+      { label: "Better Luck Next Time", lines: ["Better Luck", "Next Time"], color: "#ffeb3b", textColor: "#d32f2f", iconKey: "emoji" },
+      { label: "Kulhad Chai", lines: ["Kulhad Chai"], color: "#ffffff", textColor: "#d32f2f", iconKey: "chai" },
+      { label: "Ice Cream", lines: ["Ice Cream"], color: "#ffeb3b", textColor: "#d32f2f", iconKey: "icecream" },
+      { label: "Veg Salad", lines: ["Veg Salad"], color: "#ffffff", textColor: "#d32f2f", iconKey: "salad" },
+      { label: "Better Luck Next Time", lines: ["Better Luck", "Next Time"], color: "#ffeb3b", textColor: "#d32f2f", iconKey: "emoji" }
     ];
 
     const canvas = document.getElementById('wheelCanvas');
     const ctx = canvas.getContext('2d');
     const spinBtn = document.getElementById('spinBtn');
     const resultMsg = document.getElementById('resultMsg');
+    const closeBtn = document.getElementById('closeBtn');
 
     const numSlices = items.length;
     const arc = (2 * Math.PI) / numSlices;
     let startAngle = 0;
     let isSpinning = false;
 
-    // Load PNG Icons
+    // Load SVG Icons
     const loadedImages = {};
-    let imagesLoadedCount = 0;
-
-    items.forEach((item, index) => {
-      if (item.iconSrc && !loadedImages[item.iconSrc]) {
-        const img = new Image();
-        img.src = item.iconSrc;
-        img.onload = () => {
-          imagesLoadedCount++;
-          drawWheel();
-        };
-        loadedImages[item.iconSrc] = img;
-      }
+    Object.keys(iconData).forEach(key => {
+      const img = new Image();
+      img.src = iconData[key];
+      img.onload = () => drawWheel();
+      loadedImages[key] = img;
     });
 
-    // Draw Wheel Function
+    // Render Canvas Wheel
     function drawWheel() {
       const radius = canvas.width / 2;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (let i = 0; i < numSlices; i++) {
         const angle = startAngle + i * arc;
-        
-        // Draw Slice
+
+        // Draw Slice Background
         ctx.beginPath();
         ctx.fillStyle = items[i].color;
         ctx.moveTo(radius, radius);
-        ctx.arc(radius, radius, radius - 10, angle, angle + arc, false);
+        ctx.arc(radius, radius, radius - 12, angle, angle + arc, false);
         ctx.lineTo(radius, radius);
         ctx.fill();
-        ctx.lineWidth = 4;
+
+        // Inner Slice Separator Line
+        ctx.lineWidth = 3;
         ctx.strokeStyle = "#ffd700";
         ctx.stroke();
 
-        // Draw Content (Image & Text)
+        // Slice Content Alignment (Text + Image)
         ctx.save();
         ctx.translate(radius, radius);
         ctx.rotate(angle + arc / 2);
 
-        // Position Icon
-        const img = loadedImages[items[i].iconSrc];
+        // Render Icon
+        const img = loadedImages[items[i].iconKey];
         if (img && img.complete) {
-          ctx.drawImage(img, radius * 0.55, -20, 40, 40);
+          ctx.drawImage(img, radius * 0.62, -22, 44, 44);
         }
 
-        // Position & Format Text
+        // Render Text (Handles Single and Multi-line text)
         ctx.fillStyle = items[i].textColor;
-        ctx.font = "bold 22px Arial";
+        ctx.font = "bold 20px Arial";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
-        const textRadius = radius * 0.35;
+        const textRadius = radius * 0.33;
         if (items[i].lines.length > 1) {
           ctx.fillText(items[i].lines[0], textRadius, -12);
           ctx.fillText(items[i].lines[1], textRadius, 14);
@@ -211,46 +241,41 @@
         ctx.restore();
       }
 
-      // Draw Outer Golden Border
+      // Outer Golden Rim
       ctx.beginPath();
-      ctx.arc(radius, radius, radius - 5, 0, 2 * Math.PI);
-      ctx.lineWidth = 10;
+      ctx.arc(radius, radius, radius - 6, 0, 2 * Math.PI);
+      ctx.lineWidth = 12;
       ctx.strokeStyle = "#ffd700";
       ctx.stroke();
     }
 
-    // Check Multiple Spin Status
+    // Single Spin Enforcement Check
     function checkSpinStatus() {
-      const hasSpun = localStorage.getItem('hasUserSpun');
-      const savedResult = localStorage.getItem('spinResultMsg');
-      
-      if (hasSpun) {
-        spinBtn.disabled = true;
+      if (localStorage.getItem('hasUserSpun')) {
         spinBtn.style.display = 'none';
-        resultMsg.innerText = savedResult || "Aapne apna spin pehle hi use kar liya hai!";
+        resultMsg.innerText = localStorage.getItem('spinResultMsg') || "Aapne apna spin pehle hi use kar liya hai!";
       }
     }
 
-    // Spin Action Function
+    // Spin Animation Execution
     function spin() {
       if (isSpinning || localStorage.getItem('hasUserSpun')) return;
 
       isSpinning = true;
       spinBtn.disabled = true;
 
-      const spinRounds = 5 + Math.floor(Math.random() * 5);
+      const spinRounds = 6 + Math.floor(Math.random() * 4);
       const randomSlice = Math.floor(Math.random() * numSlices);
       const targetAngle = (2 * Math.PI * spinRounds) + ((numSlices - randomSlice - 0.5) * arc);
-      
-      let currentRotation = 0;
-      const duration = 4000;
+
+      const duration = 4500;
       const startTime = performance.now();
 
       function animate(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
-        // Ease-out cubic animation
+
+        // Ease-out cubic formula
         const easeOut = 1 - Math.pow(1 - progress, 3);
         startAngle = easeOut * targetAngle;
 
@@ -261,17 +286,14 @@
         } else {
           isSpinning = false;
           const winningItem = items[randomSlice];
-          
-          let winText = "";
-          if (winningItem.label === "Better Luck Next Time") {
-            winText = "💔 Better Luck Next Time!";
-          } else {
-            winText = `🎉 You Won: FREE ${winningItem.label}! (Attached to your next WhatsApp order)`;
-          }
+
+          let winText = winningItem.label === "Better Luck Next Time"
+            ? "💔 Better Luck Next Time!"
+            : `🎉 You Won: FREE ${winningItem.label}! (Attached to your next WhatsApp order)`;
 
           resultMsg.innerText = winText;
 
-          // Save state to prevent multiple spins
+          // Lock user from spinning again
           localStorage.setItem('hasUserSpun', 'true');
           localStorage.setItem('spinResultMsg', winText);
           spinBtn.style.display = 'none';
@@ -283,7 +305,10 @@
 
     spinBtn.addEventListener('click', spin);
 
-    // Initial Setup
+    closeBtn.addEventListener('click', () => {
+      document.querySelector('.modal-container').style.display = 'none';
+    });
+
     drawWheel();
     checkSpinStatus();
   </script>
