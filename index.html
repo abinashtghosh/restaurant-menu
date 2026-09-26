@@ -3,289 +3,676 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Real Lucky Spin & Win</title>
+  <title>Royal Heritage - Smart Menu & Interactive Wheel</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
+    :root {
+      --primary-gold: #d4af37;
+      --gold-hover: #f3e5ab;
+      --bg-dark: #0f0c0a;
+      --card-bg: rgba(25, 22, 18, 0.9);
+      --text-main: #f1f1f1;
+      --text-muted: #b0a898;
+      --accent-green: #27ae60;
+      --accent-red: #e74c3c;
+      --accent-orange: #e67e22;
     }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+
     body {
-      background-color: #121212;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: linear-gradient(rgba(15, 12, 10, 0.94), rgba(15, 12, 10, 0.97)), 
+                  url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&q=80') center/cover fixed;
+      color: var(--text-main);
+      padding-bottom: 90px;
       min-height: 100vh;
     }
-    .modal-container {
-      background-color: #1c1a17;
-      border: 1px solid #d4af37;
-      border-radius: 16px;
-      padding: 24px;
-      width: 90%;
-      max-width: 440px;
-      text-align: center;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.8);
-      position: relative;
-      color: #fff;
+
+    /* Header & Customer Login Setup */
+    header {
+      background: rgba(0, 0, 0, 0.9);
+      border-bottom: 2px solid var(--primary-gold);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
     }
-    .close-btn {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      background: none;
+    .brand h1 { font-size: 22px; color: var(--primary-gold); font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+    .brand p { font-size: 11px; color: var(--text-muted); font-style: italic; }
+
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+    
+    .user-profile {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--primary-gold);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--primary-gold);
+      font-weight: 600;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--primary-gold), #aa7c11);
+      color: #111;
       border: none;
-      color: #aaa;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    .header-title {
-      font-size: 20px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
       font-weight: bold;
-      color: #ffd700;
-      margin-bottom: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary-gold);
+      border: 1px solid var(--primary-gold);
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-outline:hover { background: rgba(212, 175, 55, 0.2); }
+
+    .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
+
+    /* Mystery Box Highlight */
+    .mystery-container {
+      background: linear-gradient(135deg, #2c3e50, #000000);
+      border: 2px solid var(--primary-gold);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 25px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
     }
-    .header-subtitle {
-      font-size: 13px;
-      color: #ccc;
-      margin-bottom: 20px;
+    .mystery-info h3 { color: var(--primary-gold); font-size: 18px; margin-bottom: 5px; }
+    .mystery-info p { font-size: 12px; color: var(--text-muted); }
+
+    /* Custom Combo Builder Box */
+    .combo-builder-box {
+      background: linear-gradient(135deg, rgba(40, 30, 20, 0.9), rgba(20, 15, 10, 0.95));
+      border: 2px dashed var(--primary-gold);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 25px;
     }
-    .wheel-container {
+    .combo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .combo-header h3 { color: var(--primary-gold); font-size: 18px; }
+    .combo-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
+    @media(max-width: 600px) { .combo-steps { grid-template-columns: 1fr; } }
+    
+    .combo-select-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
+    
+    select {
+      width: 100%;
+      padding: 9px;
+      background-color: #1a1612 !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 8px;
+      outline: none;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    /* Category Buttons */
+    .categories { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; scrollbar-width: none; }
+    .cat-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #ddd;
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.3s;
+    }
+    .cat-btn:hover, .cat-btn.active {
+      background: var(--primary-gold);
+      color: #111;
+      border-color: var(--primary-gold);
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    }
+
+    /* Menu Grid */
+    .section-title { font-size: 18px; margin: 20px 0 12px; text-transform: uppercase; border-left: 4px solid var(--primary-gold); padding-left: 10px; color: var(--primary-gold); letter-spacing: 1px; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .card:hover { transform: translateY(-4px); border-color: rgba(212, 175, 55, 0.6); }
+    .card-img-container { width: 100%; height: 160px; position: relative; background: #222; }
+    .card-img { width: 100%; height: 100%; object-fit: cover; }
+
+    .badge-tag { position: absolute; top: 10px; right: 10px; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; color: white; text-transform: uppercase; }
+    .badge-veg { background-color: var(--accent-green); }
+    .badge-nonveg { background-color: var(--accent-red); }
+    .badge-offer { background-color: var(--accent-orange); }
+
+    .card-body { padding: 14px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .item-name { font-size: 16px; font-weight: 700; color: #f5e6c8; margin-bottom: 4px; }
+    .item-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.4; }
+
+    .custom-options { margin-bottom: 10px; font-size: 12px; }
+
+    .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+    .price { font-size: 17px; font-weight: 700; color: var(--primary-gold); }
+    .old-price { font-size: 12px; text-decoration: line-through; color: #777; margin-right: 5px; }
+
+    .order-btn {
+      background: var(--accent-green);
+      color: white;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 12px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.88); backdrop-filter: blur(6px);
+      display: none; justify-content: center; align-items: center; z-index: 1000;
+    }
+    .modal-card {
+      background: #1a1612; border: 1px solid var(--primary-gold);
+      width: 90%; max-width: 420px; border-radius: 16px; padding: 20px;
+      position: relative; max-height: 90vh; overflow-y: auto; text-align: center;
+    }
+    .close-btn { position: absolute; top: 10px; right: 15px; color: var(--primary-gold); font-size: 22px; cursor: pointer; }
+    .modal-title { font-size: 17px; color: var(--primary-gold); margin-bottom: 12px; font-weight: 700; }
+
+    /* Form Styles inside Modal */
+    .form-group { text-align: left; margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+    .form-group input {
+      width: 100%; padding: 10px; background: #0f0c0a; border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 8px; color: #fff; font-size: 13px; outline: none;
+    }
+
+    /* CANVAS WHEEL STYLING */
+    .wheel-wrapper {
       position: relative;
-      width: 320px;
-      height: 320px;
-      margin: 0 auto 20px auto;
+      width: 300px;
+      height: 300px;
+      margin: 10px auto;
     }
-    #wheelCanvas {
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-    }
+
     .pointer {
       position: absolute;
-      top: -10px;
+      top: -12px;
       left: 50%;
       transform: translateX(-50%);
       width: 0;
       height: 0;
       border-left: 14px solid transparent;
       border-right: 14px solid transparent;
-      border-top: 24px solid #ff4d4d;
+      border-top: 22px solid var(--accent-red);
       z-index: 10;
     }
+
+    #wheelCanvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 5px solid var(--primary-gold);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+      transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+    }
+
     .spin-btn {
-      background: linear-gradient(180deg, #ff7a29 0%, #e64a19 100%);
-      color: #fff;
-      font-size: 16px;
-      font-weight: bold;
+      background: linear-gradient(135deg, var(--accent-orange), #c0392b);
+      color: white;
       border: none;
-      padding: 12px 36px;
+      padding: 10px 25px;
       border-radius: 25px;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(230, 74, 25, 0.4);
-      transition: all 0.3s ease;
-    }
-    .spin-btn:hover {
-      transform: scale(1.05);
-    }
-    .spin-btn:disabled {
-      background: #555;
-      cursor: not-allowed;
-      box-shadow: none;
-      transform: none;
-    }
-    .result-msg {
-      margin-top: 16px;
+      font-weight: bold;
       font-size: 14px;
-      color: #ffd700;
-      min-height: 20px;
-      font-weight: 600;
+      cursor: pointer;
+      margin-top: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+
+    .spin-btn:disabled { background: #555; cursor: not-allowed; }
+
+    #wheelResult {
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--primary-gold);
+      min-height: 24px;
     }
   </style>
 </head>
 <body>
 
-  <div class="modal-container">
-    <button class="close-btn">&times;</button>
-    <div class="header-title">🎡 Real Lucky Spin & Win</div>
-    <div class="header-subtitle">Spin the wheel to win instant free items or offers!</div>
+  <!-- Header with Customer Login Setup -->
+  <header>
+    <div class="brand">
+      <h1>Royal Heritage</h1>
+      <p>Gourmet Snacks & Smart WhatsApp Dining</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-gold" onclick="openSpinModal()">🎡 Spin & Win</button>
+      <div id="userProfile" class="user-profile">
+        <span>👤 <span id="userNameDisplay">User</span></span>
+        <button onclick="logoutUser()" style="background:none; border:none; color:var(--accent-red); cursor:pointer; font-size:11px; margin-left:5px;">Logout</button>
+      </div>
+      <button id="loginBtnNav" class="btn-outline" onclick="openLoginModal()">Login</button>
+    </div>
+  </header>
 
-    <div class="wheel-container">
-      <div class="pointer"></div>
-      <canvas id="wheelCanvas" width="600" height="600"></canvas>
+  <div class="container">
+
+    <!-- Mystery Box -->
+    <div class="mystery-container">
+      <div class="mystery-info">
+        <h3>🎁 Chef's Mystery Surprise Box</h3>
+        <p>Don't know what to order? Let our Chef select 1 Snack + 1 Beverage + 1 Sweet Surprise for you!</p>
+      </div>
+      <button class="btn-gold" onclick="orderMysteryBox()">Order Mystery Box @ ₹129</button>
     </div>
 
-    <button id="spinBtn" class="spin-btn">SPIN NOW</button>
-    <div id="resultMsg" class="result-msg"></div>
+    <!-- Custom Combo Builder -->
+    <div class="combo-builder-box">
+      <div class="combo-header">
+        <h3>🍔 Make Your Own Combo Pack</h3>
+        <span style="background: var(--accent-orange); color: #fff; font-size: 11px; padding: 3px 7px; border-radius: 4px; font-weight: bold;">FLAT ₹119</span>
+      </div>
+      <div class="combo-steps">
+        <div class="combo-select-group">
+          <label>Step 1: Choose Snack</label>
+          <select id="comboSnack">
+            <option value="Classic Vada Pav">Classic Vada Pav (Veg)</option>
+            <option value="Cheese Blast Vada Pav">Cheese Blast Vada Pav (+₹20)</option>
+            <option value="Peri Peri Fries">Peri Peri Fries</option>
+            <option value="Cheese Balls">Cheese Balls (5 Pcs)</option>
+            <option value="Veg Wrap">Veg Wrap</option>
+          </select>
+        </div>
+        <div class="combo-select-group">
+          <label>Step 2: Choose Beverage</label>
+          <select id="comboBeverage">
+            <option value="Fresh Lime Soda">Fresh Lime Soda</option>
+            <option value="Masala Kulhad Chai">Masala Kulhad Chai</option>
+            <option value="Chilled Cold Drink">Chilled Cold Drink</option>
+            <option value="Chilled Cold Coffee">Chilled Cold Coffee (+₹15)</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-gold" style="width: 100%; padding: 10px;" onclick="orderCustomCombo()">Order Combo via WhatsApp @ ₹119</button>
+    </div>
+
+    <!-- Categories -->
+    <div class="categories">
+      <button class="cat-btn active" onclick="filterMenu('all', this)">All Items</button>
+      <button class="cat-btn" onclick="filterMenu('diy', this)">🛠️ DIY Snack Kits</button>
+      <button class="cat-btn" onclick="filterMenu('offers', this)">🔥 Special Offers</button>
+      <button class="cat-btn" onclick="filterMenu('snacks', this)">Snacks & Vada Pav</button>
+      <button class="cat-btn" onclick="filterMenu('veg', this)">Veg Specials</button>
+      <button class="cat-btn" onclick="filterMenu('non-veg', this)">Non-Veg</button>
+      <button class="cat-btn" onclick="filterMenu('dessert', this)">Desserts & Tea</button>
+    </div>
+
+    <div id="menu-container"></div>
+  </div>
+
+  <!-- Customer Login Modal -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-card">
+      <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+      <div class="modal-title">👤 Customer Login / Signup</div>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="custName" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+          <label>Mobile Number</label>
+          <input type="tel" id="custPhone" placeholder="Enter 10-digit mobile number" required pattern="[0-9]{10}">
+        </div>
+        <button type="submit" class="btn-gold" style="width: 100%; margin-top: 10px;">Login & Continue</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Real Interactive Wheel Modal -->
+  <div class="modal-overlay" id="wheelModal">
+    <div class="modal-card">
+      <span class="close-btn" onclick="closeModal('wheelModal')">&times;</span>
+      <div class="modal-title">🎡 Real Lucky Spin & Win</div>
+      <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Spin the wheel to win instant free items or offers!</p>
+
+      <div class="wheel-wrapper">
+        <div class="pointer"></div>
+        <canvas id="wheelCanvas" width="300" height="300"></canvas>
+      </div>
+
+      <button class="spin-btn" id="spinBtn" onclick="spinWheel()">SPIN NOW</button>
+      <div id="wheelResult"></div>
+    </div>
   </div>
 
   <script>
-    // Configuration Options
-    const items = [
-      { label: "Kulhad Chai", lines: ["Kulhad Chai"], color: "#ffffff", textColor: "#d32f2f", iconSrc: "kulhad.png" },
-      { label: "Ice Cream", lines: ["Ice Cream"], color: "#ffeb3b", textColor: "#d32f2f", iconSrc: "icecream.png" },
-      { label: "Veg Salad", lines: ["Veg Salad"], color: "#ffffff", textColor: "#d32f2f", iconSrc: "salad.png" },
-      { label: "Better Luck Next Time", lines: ["Better Luck", "Next Time"], color: "#ffeb3b", textColor: "#d32f2f", iconSrc: "emoji.png" },
-      { label: "Kulhad Chai", lines: ["Kulhad Chai"], color: "#ffffff", textColor: "#d32f2f", iconSrc: "kulhad.png" },
-      { label: "Ice Cream", lines: ["Ice Cream"], color: "#ffeb3b", textColor: "#d32f2f", iconSrc: "icecream.png" },
-      { label: "Veg Salad", lines: ["Veg Salad"], color: "#ffffff", textColor: "#d32f2f", iconSrc: "salad.png" },
-      { label: "Better Luck Next Time", lines: ["Better Luck", "Next Time"], color: "#ffeb3b", textColor: "#d32f2f", iconSrc: "emoji.png" }
+    const RESTAURANT_PHONE = "919204506060"; 
+
+    const menuItems = [
+      {
+        id: 1,
+        name: "Mumbai Style Vada Pav",
+        category: "Snacks",
+        price: 49,
+        description: "Fresh potato vada inside soft pav with spicy dry garlic chutney & fried green chili.",
+        imageUrl: "vada pav.jpg",
+        veg: true,
+        customizable: true
+      },
+      {
+        id: 2,
+        name: "Cheese Blast Vada Pav",
+        category: "Snacks",
+        price: 69,
+        description: "Loaded with melted mozzarella cheese inside potato vada for extra taste.",
+        imageUrl: "cheese vada pav.jpeg",
+        veg: true,
+        customizable: true
+      },
+      {
+        id: 3,
+        name: "DIY Crisp Vada Pav Kit (Pack of 2)",
+        category: "DIY Snack Kits",
+        price: 110,
+        description: "Separately packed hot vadas, soft pavs, garlic chutney & fried chilis. Assemble fresh & hot at home!",
+        imageUrl: "vada pav.jpg",
+        veg: true
+      },
+      {
+        id: 4,
+        name: "Vada Pav + Fresh Lime Combo",
+        category: "Special Offers",
+        price: 119,
+        originalPrice: 129,
+        description: "1 Classic Vada Pav served along with chilled refreshing Fresh Lime Soda.",
+        imageUrl: "vada pav & lime soda.png",
+        veg: true,
+        isOffer: true
+      },
+      {
+        id: 5,
+        name: "Peri Peri Fries",
+        category: "Snacks",
+        price: 90,
+        description: "Crispy french fries tossed in spicy and tangy peri peri seasoning.",
+        imageUrl: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600&q=80",
+        veg: true
+      },
+      {
+        id: 6,
+        name: "Gulab Jamun (2 Pcs)",
+        category: "Desserts & Tea",
+        price: 90,
+        description: "Warm dough balls soaked in cardamom flavored sweet syrup.",
+        imageUrl: "gulab jamun.avif",
+        veg: true
+      },
+      {
+        id: 7,
+        name: "Masala Kulhad Chai",
+        category: "Desserts & Tea",
+        price: 30,
+        description: "Authentic Indian milk tea brewed with aromatic spices, served in earthy kulhad.",
+        imageUrl: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&q=80",
+        veg: true
+      }
     ];
 
-    const canvas = document.getElementById('wheelCanvas');
-    const ctx = canvas.getContext('2d');
-    const spinBtn = document.getElementById('spinBtn');
-    const resultMsg = document.getElementById('resultMsg');
+    let currentUser = JSON.parse(localStorage.getItem('royalUser')) || null;
+    let appliedCoupon = "";
 
-    const numSlices = items.length;
-    const arc = (2 * Math.PI) / numSlices;
-    let startAngle = 0;
-    let isSpinning = false;
-
-    // Load PNG Icons
-    const loadedImages = {};
-    let imagesLoadedCount = 0;
-
-    items.forEach((item, index) => {
-      if (item.iconSrc && !loadedImages[item.iconSrc]) {
-        const img = new Image();
-        img.src = item.iconSrc;
-        img.onload = () => {
-          imagesLoadedCount++;
-          drawWheel();
-        };
-        loadedImages[item.iconSrc] = img;
+    function checkUserStatus() {
+      if (currentUser) {
+        document.getElementById('loginBtnNav').style.display = 'none';
+        document.getElementById('userProfile').style.display = 'flex';
+        document.getElementById('userNameDisplay').innerText = currentUser.name;
+      } else {
+        document.getElementById('loginBtnNav').style.display = 'block';
+        document.getElementById('userProfile').style.display = 'none';
       }
-    });
+    }
 
-    // Draw Wheel Function
+    function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+    
+    function handleLogin(e) {
+      e.preventDefault();
+      const name = document.getElementById('custName').value;
+      const phone = document.getElementById('custPhone').value;
+      currentUser = { name, phone };
+      localStorage.setItem('royalUser', JSON.stringify(currentUser));
+      checkUserStatus();
+      closeModal('loginModal');
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('royalUser');
+      currentUser = null;
+      checkUserStatus();
+    }
+
+    function renderMenu(items) {
+      const container = document.getElementById('menu-container');
+      const grouped = {};
+
+      items.forEach(item => {
+        if (!grouped[item.category]) grouped[item.category] = [];
+        grouped[item.category].push(item);
+      });
+
+      let html = '';
+      for (const cat in grouped) {
+        html += `<h2 class="section-title">${cat}</h2><div class="menu-grid">`;
+        grouped[cat].forEach(item => {
+          html += `
+            <div class="card">
+              <div class="card-img-container">
+                <span class="badge-tag ${item.isOffer ? 'badge-offer' : (item.veg ? 'badge-veg' : 'badge-nonveg')}">
+                  ${item.isOffer ? 'OFFER' : (item.veg ? 'Veg' : 'Non-Veg')}
+                </span>
+                <img src="${item.imageUrl}" class="card-img" alt="${item.name}">
+              </div>
+              <div class="card-body">
+                <div>
+                  <div class="item-name">${item.name}</div>
+                  <div class="item-desc">${item.description}</div>
+                  
+                  ${item.customizable ? `
+                    <div class="custom-options">
+                      <select id="spice_${item.id}">
+                        <option value="Medium Spicy">🌶️ Medium Spicy</option>
+                        <option value="Less Spicy"> Mild</option>
+                        <option value="Extra Spicy">🔥🔥 Extra Spicy</option>
+                      </select>
+                    </div>
+                  ` : ''}
+                </div>
+                <div class="card-footer">
+                  <div>
+                    ${item.originalPrice ? `<span class="old-price">₹${item.originalPrice}</span>` : ''}
+                    <span class="price" id="price_display_${item.id}">₹${item.price}</span>
+                  </div>
+                  <button class="order-btn" onclick="directOrder('${item.name}', ${item.price}, ${item.id})">
+                    Order WhatsApp
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      }
+      container.innerHTML = html;
+    }
+
+    function filterMenu(category, btn) {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (category === 'all') {
+        renderMenu(menuItems);
+      } else {
+        const filtered = menuItems.filter(i => {
+          const cat = i.category.toLowerCase();
+          if (category === 'diy') return cat.includes('diy');
+          if (category === 'offers') return cat.includes('offer');
+          if (category === 'snacks') return cat.includes('snack');
+          if (category === 'veg') return i.veg && !cat.includes('snack') && !cat.includes('diy');
+          if (category === 'non-veg') return !i.veg;
+          if (category === 'dessert') return cat.includes('dessert');
+          return true;
+        });
+        renderMenu(filtered);
+      }
+    }
+
+    function directOrder(itemName, price, itemId) {
+      let userInfo = currentUser ? `\n- *Customer:* ${currentUser.name} (${currentUser.phone})` : '';
+      let customText = '';
+      const spiceElem = document.getElementById(`spice_${itemId}`);
+      if (spiceElem) customText += `\n- Preference: ${spiceElem.value}`;
+
+      let couponText = appliedCoupon ? `\n- Reward Won: *${appliedCoupon}*` : '';
+
+      const message = `*NEW ORDER - ROYAL HERITAGE*${userInfo}\n\n- *Item:* ${itemName}${customText}\n- *Amount:* ₹${price}${couponText}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      
+      window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function orderCustomCombo() {
+      let userInfo = currentUser ? `\n- *Customer:* ${currentUser.name} (${currentUser.phone})` : '';
+      const snack = document.getElementById('comboSnack').value;
+      const beverage = document.getElementById('comboBeverage').value;
+      const message = `*NEW COMBO ORDER (₹119)*${userInfo}\n\n- *Snack:* ${snack}\n- *Beverage:* ${beverage}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function orderMysteryBox() {
+      let userInfo = currentUser ? `\n- *Customer:* ${currentUser.name} (${currentUser.phone})` : '';
+      const message = `*MYSTERY SURPRISE BOX ORDER (₹129)*${userInfo}\n\n- *Selection:* Chef's Special Surprise Box\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function openSpinModal() { 
+      document.getElementById('wheelModal').style.display = 'flex'; 
+      drawWheel();
+    }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    /* REAL CANVAS WHEEL LOGIC WITH WHITE & YELLOW PORTIONS & BOLD RED TEXT */
+    const canvas = document.getElementById("wheelCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Repeat items to fill 8 slices with White & Yellow alternated backgrounds
+    const wheelItems = [
+      { label: "Kulhad Chai", bg: "#FFFFFF" },
+      { label: "Ice Cream", bg: "#FFEB3B" },
+      { label: "Veg Salad", bg: "#FFFFFF" },
+      { label: "Better Luck Next Time", bg: "#FFEB3B" },
+      { label: "Kulhad Chai", bg: "#FFFFFF" },
+      { label: "Ice Cream", bg: "#FFEB3B" },
+      { label: "Veg Salad", bg: "#FFFFFF" },
+      { label: "Better Luck Next Time", bg: "#FFEB3B" }
+    ];
+
+    const numSegments = wheelItems.length;
+    const arcSize = (2 * Math.PI) / numSegments;
+    let currentRotation = 0;
+
     function drawWheel() {
       const radius = canvas.width / 2;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      for (let i = 0; i < numSlices; i++) {
-        const angle = startAngle + i * arc;
-        
-        // Draw Slice
+      for (let i = 0; i < numSegments; i++) {
+        const angle = i * arcSize;
         ctx.beginPath();
-        ctx.fillStyle = items[i].color;
+        ctx.fillStyle = wheelItems[i].bg;
         ctx.moveTo(radius, radius);
-        ctx.arc(radius, radius, radius - 10, angle, angle + arc, false);
+        ctx.arc(radius, radius, radius, angle, angle + arcSize);
         ctx.lineTo(radius, radius);
         ctx.fill();
-        ctx.lineWidth = 4;
-        ctx.strokeStyle = "#ffd700";
+
+        // Draw segment borders
+        ctx.strokeStyle = "#d4af37";
+        ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Draw Content (Image & Text)
+        // Draw Text - Bold Red Color for perfect contrast
         ctx.save();
         ctx.translate(radius, radius);
-        ctx.rotate(angle + arc / 2);
-
-        // Position Icon
-        const img = loadedImages[items[i].iconSrc];
-        if (img && img.complete) {
-          ctx.drawImage(img, radius * 0.55, -20, 40, 40);
-        }
-
-        // Position & Format Text
-        ctx.fillStyle = items[i].textColor;
-        ctx.font = "bold 22px Arial";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-
-        const textRadius = radius * 0.35;
-        if (items[i].lines.length > 1) {
-          ctx.fillText(items[i].lines[0], textRadius, -12);
-          ctx.fillText(items[i].lines[1], textRadius, 14);
-        } else {
-          ctx.fillText(items[i].lines[0], textRadius, 0);
-        }
-
+        ctx.rotate(angle + arcSize / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#D32F2F"; // Bold Red Text
+        ctx.font = "bold 13px Arial";
+        ctx.fillText(wheelItems[i].label, radius - 12, 5);
         ctx.restore();
       }
-
-      // Draw Outer Golden Border
-      ctx.beginPath();
-      ctx.arc(radius, radius, radius - 5, 0, 2 * Math.PI);
-      ctx.lineWidth = 10;
-      ctx.strokeStyle = "#ffd700";
-      ctx.stroke();
     }
 
-    // Check Multiple Spin Status
-    function checkSpinStatus() {
-      const hasSpun = localStorage.getItem('hasUserSpun');
-      const savedResult = localStorage.getItem('spinResultMsg');
-      
-      if (hasSpun) {
-        spinBtn.disabled = true;
-        spinBtn.style.display = 'none';
-        resultMsg.innerText = savedResult || "Aapne apna spin pehle hi use kar liya hai!";
-      }
-    }
+    function spinWheel() {
+      const spinBtn = document.getElementById("spinBtn");
+      const resultDiv = document.getElementById("wheelResult");
 
-    // Spin Action Function
-    function spin() {
-      if (isSpinning || localStorage.getItem('hasUserSpun')) return;
-
-      isSpinning = true;
       spinBtn.disabled = true;
+      resultDiv.innerText = "";
 
-      const spinRounds = 5 + Math.floor(Math.random() * 5);
-      const randomSlice = Math.floor(Math.random() * numSlices);
-      const targetAngle = (2 * Math.PI * spinRounds) + ((numSlices - randomSlice - 0.5) * arc);
+      const randomIndex = Math.floor(Math.random() * numSegments);
+      const segmentDegrees = 360 / numSegments;
+      const targetDegree = 360 - (randomIndex * segmentDegrees) - (segmentDegrees / 2) - 90;
+      const extraSpins = 5 * 360; 
       
-      let currentRotation = 0;
-      const duration = 4000;
-      const startTime = performance.now();
+      currentRotation += extraSpins + (targetDegree - (currentRotation % 360));
+      canvas.style.transform = `rotate(${currentRotation}deg)`;
 
-      function animate(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // Ease-out cubic animation
-        const easeOut = 1 - Math.pow(1 - progress, 3);
-        startAngle = easeOut * targetAngle;
-
-        drawWheel();
-
-        if (progress < 1) {
-          requestAnimationFrame(animate);
+      setTimeout(() => {
+        spinBtn.disabled = false;
+        const wonItem = wheelItems[randomIndex].label;
+        if (wonItem === "Better Luck Next Time") {
+          resultDiv.innerText = "😔 Better Luck Next Time! Try tomorrow.";
         } else {
-          isSpinning = false;
-          const winningItem = items[randomSlice];
-          
-          let winText = "";
-          if (winningItem.label === "Better Luck Next Time") {
-            winText = "💔 Better Luck Next Time!";
-          } else {
-            winText = `🎉 You Won: FREE ${winningItem.label}! (Attached to your next WhatsApp order)`;
-          }
-
-          resultMsg.innerText = winText;
-
-          // Save state to prevent multiple spins
-          localStorage.setItem('hasUserSpun', 'true');
-          localStorage.setItem('spinResultMsg', winText);
-          spinBtn.style.display = 'none';
+          appliedCoupon = `FREE ${wonItem}`;
+          resultDiv.innerText = `🎉 You Won: FREE ${wonItem}! (Attached to your next WhatsApp order)`;
         }
-      }
-
-      requestAnimationFrame(animate);
+      }, 4000);
     }
 
-    spinBtn.addEventListener('click', spin);
-
-    // Initial Setup
-    drawWheel();
-    checkSpinStatus();
+    checkUserStatus();
+    renderMenu(menuItems);
   </script>
 </body>
 </html>
