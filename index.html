@@ -88,8 +88,24 @@
     @media(max-width: 600px) { .combo-steps { grid-template-columns: 1fr; } }
     
     .combo-select-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
-    .combo-select-group select {
-      width: 100%; padding: 10px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 8px; color: #fff; outline: none;
+    
+    /* Styling select & options for dark theme */
+    select {
+      width: 100%;
+      padding: 10px;
+      background-color: #1a1612 !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 8px;
+      outline: none;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    select option {
+      background-color: #1a1612 !important;
+      color: #ffffff !important;
+      padding: 10px;
     }
 
     /* Category Buttons */
@@ -140,9 +156,6 @@
     .item-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4; }
 
     .custom-options { margin-bottom: 12px; font-size: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
-    .custom-options select, .custom-options label {
-      background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(212, 175, 55, 0.3); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 11px;
-    }
 
     .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
     .price { font-size: 18px; font-weight: 700; color: var(--primary-gold); }
@@ -187,14 +200,6 @@
     /* Gamification: Spin Wheel Container */
     .wheel-box { text-align: center; margin: 15px 0; }
     .wheel-btn { background: var(--accent-orange); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
-
-    /* Floating Cart Badge */
-    .cart-float-btn {
-      position: fixed; bottom: 20px; right: 20px;
-      background: var(--primary-gold); color: #111;
-      padding: 12px 20px; border-radius: 30px; font-weight: bold;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5); cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 99;
-    }
   </style>
 </head>
 <body>
@@ -308,7 +313,7 @@
   </div>
 
   <script>
-    const RESTAURANT_PHONE = "919876543210"; // Apna WhatsApp Number yahan dalein
+    const RESTAURANT_PHONE = "919876543210"; 
 
     const menuItems = [
       {
@@ -327,7 +332,7 @@
         category: "Snacks",
         price: 69,
         description: "Loaded with melted mozzarella cheese inside potato vada for extra taste.",
-        imageUrl: "vada pav.jpg",
+        imageUrl: "cheese vada pav.jpeg",
         veg: true,
         customizable: true
       },
@@ -338,7 +343,7 @@
         price: 119,
         originalPrice: 129,
         description: "1 Classic Vada Pav served along with chilled refreshing Fresh Lime Soda.",
-        imageUrl: "vada pav.jpg",
+        imageUrl: "vada pav & lime soda.png",
         veg: true,
         isOffer: true
       },
