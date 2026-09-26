@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Royal Heritage - Gourmet Menu & Loyalty</title>
+  <title>Royal Heritage - Innovative Smart Menu</title>
   <style>
     :root {
       --primary-gold: #d4af37;
@@ -15,23 +15,24 @@
       --accent-green: #27ae60;
       --accent-red: #e74c3c;
       --accent-orange: #e67e22;
+      --accent-purple: #8e44ad;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
 
     body {
-      background: linear-gradient(rgba(15, 12, 10, 0.93), rgba(15, 12, 10, 0.96)), 
+      background: linear-gradient(rgba(15, 12, 10, 0.94), rgba(15, 12, 10, 0.97)), 
                   url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&q=80') center/cover fixed;
       color: var(--text-main);
-      padding-bottom: 80px;
+      padding-bottom: 90px;
       min-height: 100vh;
     }
 
     /* Header */
     header {
-      background: rgba(0, 0, 0, 0.88);
+      background: rgba(0, 0, 0, 0.9);
       border-bottom: 2px solid var(--primary-gold);
-      padding: 18px 25px;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -40,83 +41,91 @@
       z-index: 100;
       backdrop-filter: blur(10px);
     }
-    .brand h1 { font-size: 24px; color: var(--primary-gold); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
-    .brand p { font-size: 12px; color: var(--text-muted); font-style: italic; }
+    .brand h1 { font-size: 22px; color: var(--primary-gold); font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+    .brand p { font-size: 11px; color: var(--text-muted); font-style: italic; }
 
-    .header-actions { display: flex; gap: 10px; }
+    .header-actions { display: flex; gap: 8px; }
     .btn-gold {
       background: linear-gradient(135deg, var(--primary-gold), #aa7c11);
       color: #111;
       border: none;
-      padding: 9px 18px;
-      border-radius: 25px;
-      font-size: 13px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s;
     }
     .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); }
 
-    /* Announcement Banner */
-    .banner-container { max-width: 950px; margin: 20px auto 0; padding: 0 15px; }
+    .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
+
+    /* Innovative Banners */
     .special-banner {
       background: linear-gradient(135deg, #c0392b, #8e44ad);
       color: #fff;
       border-radius: 12px;
-      padding: 16px 20px;
+      padding: 15px;
       display: flex;
       align-items: center;
       gap: 15px;
+      margin-bottom: 20px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
     }
-    .banner-icon { font-size: 30px; background: rgba(255, 255, 255, 0.2); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .banner-icon { font-size: 28px; background: rgba(255, 255, 255, 0.2); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-    .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
+    /* Mystery Box Highlight */
+    .mystery-container {
+      background: linear-gradient(135deg, #2c3e50, #000000);
+      border: 2px solid var(--primary-gold);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .mystery-info h3 { color: var(--primary-gold); font-size: 18px; margin-bottom: 5px; }
+    .mystery-info p { font-size: 12px; color: var(--text-muted); }
 
     /* Custom Combo Builder Box */
     .combo-builder-box {
       background: linear-gradient(135deg, rgba(40, 30, 20, 0.9), rgba(20, 15, 10, 0.95));
       border: 2px dashed var(--primary-gold);
       border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 30px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+      padding: 20px;
+      margin-bottom: 25px;
     }
-    .combo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .combo-header h3 { color: var(--primary-gold); font-size: 20px; }
-    .combo-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 18px; }
+    .combo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .combo-header h3 { color: var(--primary-gold); font-size: 18px; }
+    .combo-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
     @media(max-width: 600px) { .combo-steps { grid-template-columns: 1fr; } }
     
-    .combo-select-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+    .combo-select-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
     
-    /* Styling select & options for dark theme */
     select {
       width: 100%;
-      padding: 10px;
+      padding: 9px;
       background-color: #1a1612 !important;
       color: #ffffff !important;
       border: 1px solid rgba(212, 175, 55, 0.4);
       border-radius: 8px;
       outline: none;
-      font-size: 13px;
+      font-size: 12px;
       cursor: pointer;
     }
 
-    select option {
-      background-color: #1a1612 !important;
-      color: #ffffff !important;
-      padding: 10px;
-    }
-
     /* Category Buttons */
-    .categories { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; }
+    .categories { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; scrollbar-width: none; }
     .cat-btn {
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(212, 175, 55, 0.3);
       color: #ddd;
-      padding: 8px 18px;
-      border-radius: 25px;
-      font-size: 13px;
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
@@ -129,9 +138,9 @@
       box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
     }
 
-    /* Menu Cards */
-    .section-title { font-size: 20px; margin: 25px 0 15px; text-transform: uppercase; border-left: 4px solid var(--primary-gold); padding-left: 10px; color: var(--primary-gold); letter-spacing: 1px; }
-    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 20px; }
+    /* Menu Grid */
+    .section-title { font-size: 18px; margin: 20px 0 12px; text-transform: uppercase; border-left: 4px solid var(--primary-gold); padding-left: 10px; color: var(--primary-gold); letter-spacing: 1px; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
 
     .card {
       background: var(--card-bg);
@@ -143,7 +152,7 @@
       transition: transform 0.3s, border-color 0.3s;
     }
     .card:hover { transform: translateY(-4px); border-color: rgba(212, 175, 55, 0.6); }
-    .card-img-container { width: 100%; height: 170px; position: relative; background: #222; }
+    .card-img-container { width: 100%; height: 160px; position: relative; background: #222; }
     .card-img { width: 100%; height: 100%; object-fit: cover; }
 
     .badge-tag { position: absolute; top: 10px; right: 10px; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; color: white; text-transform: uppercase; }
@@ -151,23 +160,22 @@
     .badge-nonveg { background-color: var(--accent-red); }
     .badge-offer { background-color: var(--accent-orange); }
 
-    .card-body { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-    .item-name { font-size: 17px; font-weight: 700; color: #f5e6c8; margin-bottom: 4px; }
-    .item-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4; }
+    .card-body { padding: 14px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .item-name { font-size: 16px; font-weight: 700; color: #f5e6c8; margin-bottom: 4px; }
+    .item-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.4; }
 
-    .custom-options { margin-bottom: 12px; font-size: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .custom-options { margin-bottom: 10px; font-size: 12px; }
 
     .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-    .price { font-size: 18px; font-weight: 700; color: var(--primary-gold); }
-    .old-price { font-size: 13px; text-decoration: line-through; color: #777; margin-right: 5px; }
+    .price { font-size: 17px; font-weight: 700; color: var(--primary-gold); }
+    .old-price { font-size: 12px; text-decoration: line-through; color: #777; margin-right: 5px; }
 
     .order-btn {
       background: var(--accent-green);
       color: white;
-      padding: 8px 14px;
+      padding: 7px 12px;
       border-radius: 8px;
       font-weight: bold;
-      text-decoration: none;
       font-size: 12px;
       border: none;
       cursor: pointer;
@@ -176,7 +184,7 @@
       gap: 5px;
     }
 
-    /* Modal Overlay & Card */
+    /* Modal Overlay */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
@@ -184,22 +192,22 @@
     }
     .modal-card {
       background: #1a1612; border: 1px solid var(--primary-gold);
-      width: 90%; max-width: 440px; border-radius: 16px; padding: 22px;
+      width: 90%; max-width: 420px; border-radius: 16px; padding: 20px;
       position: relative; max-height: 90vh; overflow-y: auto;
     }
-    .close-btn { position: absolute; top: 12px; right: 16px; color: var(--primary-gold); font-size: 22px; cursor: pointer; }
-    .modal-title { font-size: 18px; color: var(--primary-gold); margin-bottom: 15px; text-align: center; font-weight: 700; }
+    .close-btn { position: absolute; top: 10px; right: 15px; color: var(--primary-gold); font-size: 22px; cursor: pointer; }
+    .modal-title { font-size: 17px; color: var(--primary-gold); margin-bottom: 12px; text-align: center; font-weight: 700; }
 
     .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 12px; color: var(--primary-gold); margin-bottom: 4px; }
+    .form-group label { display: block; font-size: 11px; color: var(--primary-gold); margin-bottom: 4px; }
     .form-control {
-      width: 100%; padding: 9px 12px; background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(212,175,55,0.3); border-radius: 8px; color: #fff; font-size: 13px; outline: none;
+      width: 100%; padding: 8px 12px; background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(212,175,55,0.3); border-radius: 8px; color: #fff; font-size: 12px; outline: none;
     }
 
-    /* Gamification: Spin Wheel Container */
-    .wheel-box { text-align: center; margin: 15px 0; }
-    .wheel-btn { background: var(--accent-orange); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+    /* Wheel Animation Box */
+    .wheel-box { text-align: center; margin: 15px 0; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; }
+    .wheel-btn { background: var(--accent-orange); color: white; border: none; padding: 9px 18px; border-radius: 20px; font-weight: bold; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -207,31 +215,30 @@
   <header>
     <div class="brand">
       <h1>Royal Heritage</h1>
-      <p>Gourmet Snacks & Dining Club</p>
+      <p>Gourmet Snacks & Smart WhatsApp Dining</p>
     </div>
     <div class="header-actions">
-      <button class="btn-gold" onclick="openLoginModal()">Login / Profile</button>
+      <button class="btn-gold" onclick="openSpinModal()">🎡 Spin & Win</button>
+      <button class="btn-gold" onclick="openLoginModal()">👤 Profile</button>
     </div>
   </header>
 
-  <!-- Celebration Banner -->
-  <div class="banner-container" id="banner-container" style="display: none;">
-    <div class="special-banner">
-      <div class="banner-icon" id="banner-icon">🎉</div>
-      <div>
-        <h3 id="banner-title">Happy Birthday!</h3>
-        <p id="banner-msg">Enjoy a complimentary Gulab Jamun with your order today!</p>
-      </div>
-    </div>
-  </div>
-
   <div class="container">
 
-    <!-- Interactive Custom Combo Builder -->
+    <!-- Mystery Box Innovation -->
+    <div class="mystery-container">
+      <div class="mystery-info">
+        <h3>🎁 Chef's Mystery Surprise Box</h3>
+        <p>Don't know what to order? Let our Chef select 1 Snack + 1 Beverage + 1 Sweet Surprise for you!</p>
+      </div>
+      <button class="btn-gold" onclick="orderMysteryBox()">Order Mystery Box @ ₹129</button>
+    </div>
+
+    <!-- Custom Combo Builder -->
     <div class="combo-builder-box">
       <div class="combo-header">
         <h3>🍔 Make Your Own Combo Pack</h3>
-        <span style="background: var(--accent-orange); color: #fff; font-size: 11px; padding: 4px 8px; border-radius: 4px; font-weight: bold;">FLAT ₹119</span>
+        <span style="background: var(--accent-orange); color: #fff; font-size: 11px; padding: 3px 7px; border-radius: 4px; font-weight: bold;">FLAT ₹119</span>
       </div>
       <div class="combo-steps">
         <div class="combo-select-group">
@@ -242,7 +249,6 @@
             <option value="Peri Peri Fries">Peri Peri Fries</option>
             <option value="Cheese Balls">Cheese Balls (5 Pcs)</option>
             <option value="Veg Wrap">Veg Wrap</option>
-            <option value="Veg Sandwich">Veg Sandwich</option>
           </select>
         </div>
         <div class="combo-select-group">
@@ -255,69 +261,59 @@
           </select>
         </div>
       </div>
-      <button class="btn-gold" style="width: 100%; padding: 11px;" onclick="orderCustomCombo()">Order Combo via WhatsApp @ ₹119</button>
+      <button class="btn-gold" style="width: 100%; padding: 10px;" onclick="orderCustomCombo()">Order Combo via WhatsApp @ ₹119</button>
     </div>
 
-    <!-- Category Selector -->
+    <!-- Categories -->
     <div class="categories">
       <button class="cat-btn active" onclick="filterMenu('all', this)">All Items</button>
+      <button class="cat-btn" onclick="filterMenu('diy', this)">🛠️ DIY Snack Kits</button>
       <button class="cat-btn" onclick="filterMenu('offers', this)">🔥 Special Offers</button>
       <button class="cat-btn" onclick="filterMenu('snacks', this)">Snacks & Vada Pav</button>
       <button class="cat-btn" onclick="filterMenu('veg', this)">Veg Specials</button>
       <button class="cat-btn" onclick="filterMenu('non-veg', this)">Non-Veg</button>
-      <button class="cat-btn" onclick="filterMenu('dessert', this)">Desserts</button>
-      <button class="cat-btn" onclick="filterMenu('drinks', this)">Drinks & Tea</button>
+      <button class="cat-btn" onclick="filterMenu('dessert', this)">Desserts & Tea</button>
     </div>
 
     <div id="menu-container"></div>
   </div>
 
-  <!-- Modal 1: Login -->
-  <div class="modal-overlay" id="authModal">
+  <!-- Spin Wheel Modal -->
+  <div class="modal-overlay" id="wheelModal">
     <div class="modal-card">
-      <span class="close-btn" onclick="closeModal('authModal')">&times;</span>
-      <div class="modal-title">Customer Loyalty Login</div>
-      <div class="form-group">
-        <label>Mobile Number</label>
-        <input type="tel" id="userPhone" class="form-control" placeholder="Enter 10-digit phone number" maxlength="10">
+      <span class="close-btn" onclick="closeModal('wheelModal')">&times;</span>
+      <div class="modal-title">🎡 Daily Lucky Spin & Win</div>
+      <div class="wheel-box">
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Spin the wheel to unlock exclusive discounts for today's order!</p>
+        <button class="wheel-btn" id="spinBtn" onclick="spinWheel()">SPIN NOW</button>
+        <div id="wheelResult" style="margin-top: 12px; font-size: 13px; font-weight: bold; color: var(--primary-gold);"></div>
       </div>
-      <button class="btn-gold" style="width: 100%; margin-top: 10px;" onclick="loginWithMobile()">Continue</button>
     </div>
   </div>
 
-  <!-- Modal 2: Loyalty Profile & Spin Wheel -->
-  <div class="modal-overlay" id="profileModal">
+  <!-- Login/Profile Modal -->
+  <div class="modal-overlay" id="authModal">
     <div class="modal-card">
-      <span class="close-btn" onclick="closeModal('profileModal')">&times;</span>
-      <div class="modal-title">My Loyalty Dashboard</div>
-
-      <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 15px; border: 1px solid var(--primary-gold);">
-        <div style="font-size: 12px; color: #aaa;">Your Rewards Points</div>
-        <div style="font-size: 30px; font-weight: bold; color: var(--primary-gold);" id="displayPoints">50 PTS</div>
+      <span class="close-btn" onclick="closeModal('authModal')">&times;</span>
+      <div class="modal-title">Customer Loyalty & Offers</div>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="custName" class="form-control" placeholder="Enter your name">
       </div>
-
-      <div class="wheel-box">
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Spin to win instant discount code!</p>
-        <button class="wheel-btn" onclick="spinWheel()">🎡 Spin Daily Lucky Wheel</button>
-        <div id="wheelResult" style="margin-top: 10px; font-size: 13px; font-weight: bold; color: var(--primary-gold);"></div>
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input type="tel" id="userPhone" class="form-control" placeholder="Enter 10-digit phone" maxlength="10">
       </div>
-
-      <form id="profileForm" onsubmit="saveProfile(event)">
-        <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" id="custName" class="form-control" required placeholder="Enter name">
-        </div>
-        <div class="form-group">
-          <label>Date of Birth (DOB)</label>
-          <input type="date" id="custDOB" class="form-control" required>
-        </div>
-        <button type="submit" class="btn-gold" style="width: 100%; margin-top: 10px;">Save Profile</button>
-      </form>
+      <div class="form-group">
+        <label>Date of Birth (For Birthday Treats 🎂)</label>
+        <input type="date" id="custDOB" class="form-control">
+      </div>
+      <button class="btn-gold" style="width: 100%; margin-top: 10px;" onclick="saveProfile()">Save Profile</button>
     </div>
   </div>
 
   <script>
-    // Updated WhatsApp Mobile Number
+    // Updated Target WhatsApp Mobile Number
     const RESTAURANT_PHONE = "919204506060"; 
 
     const menuItems = [
@@ -343,6 +339,15 @@
       },
       {
         id: 3,
+        name: "DIY Crisp Vada Pav Kit (Pack of 2)",
+        category: "DIY Snack Kits",
+        price: 110,
+        description: "Separately packed hot vadas, soft pavs, garlic chutney & fried chilis. Assemble fresh & hot at home!",
+        imageUrl: "vada pav.jpg",
+        veg: true
+      },
+      {
+        id: 4,
         name: "Vada Pav + Fresh Lime Combo",
         category: "Special Offers",
         price: 119,
@@ -353,7 +358,7 @@
         isOffer: true
       },
       {
-        id: 4,
+        id: 5,
         name: "Peri Peri Fries",
         category: "Snacks",
         price: 90,
@@ -362,7 +367,7 @@
         veg: true
       },
       {
-        id: 5,
+        id: 6,
         name: "Cheese Balls (5 Pcs)",
         category: "Snacks",
         price: 99,
@@ -371,25 +376,7 @@
         veg: true
       },
       {
-        id: 6,
-        name: "Veg Wrap (1 Pc)",
-        category: "Snacks",
-        price: 55,
-        description: "Soft tortilla wrap stuffed with fresh veggies, tangy sauces, and crisp patty.",
-        imageUrl: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600&q=80",
-        veg: true
-      },
-      {
         id: 7,
-        name: "Veg Sandwich (1 Pc)",
-        category: "Snacks",
-        price: 55,
-        description: "Freshly layered vegetable sandwich with green chutney and mild spices.",
-        imageUrl: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&q=80",
-        veg: true
-      },
-      {
-        id: 8,
         name: "Chana Chilli (Veg)",
         category: "Veg Specials",
         price: 80,
@@ -399,34 +386,7 @@
         hasPortions: true
       },
       {
-        id: 9,
-        name: "Plain Dosa",
-        category: "Veg Specials",
-        price: 70,
-        description: "Thin and crispy South-Indian rice crepe served with coconut chutney & sambar.",
-        imageUrl: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=600&q=80",
-        veg: true
-      },
-      {
-        id: 10,
-        name: "Masala Dosa",
-        category: "Veg Specials",
-        price: 140,
-        description: "Crispy rice crepe stuffed with spiced potato mash, served with chutney & sambar.",
-        imageUrl: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&q=80",
-        veg: true
-      },
-      {
-        id: 11,
-        name: "Paneer Tikka",
-        category: "Veg Specials",
-        price: 260,
-        description: "Marinated cottage cheese cubes grilled to perfection in traditional tandoor.",
-        imageUrl: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&q=80",
-        veg: true
-      },
-      {
-        id: 12,
+        id: 8,
         name: "Butter Chicken",
         category: "Non-Veg",
         price: 369,
@@ -435,53 +395,26 @@
         veg: false
       },
       {
-        id: 13,
-        name: "Vanilla Ice Cream (2 Scoops)",
-        category: "Desserts",
-        price: 60,
-        description: "Classic rich and creamy vanilla bean flavored ice cream.",
-        imageUrl: "https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=600&q=80",
-        veg: true
-      },
-      {
-        id: 14,
+        id: 9,
         name: "Gulab Jamun (2 Pcs)",
-        category: "Desserts",
+        category: "Desserts & Tea",
         price: 90,
         description: "Warm dough balls soaked in cardamom flavored sweet syrup.",
         imageUrl: "gulab jamun.avif",
         veg: true
       },
       {
-        id: 15,
+        id: 10,
         name: "Masala Kulhad Chai",
-        category: "Drinks & Tea",
+        category: "Desserts & Tea",
         price: 30,
         description: "Authentic Indian milk tea brewed with aromatic spices, served in earthy kulhad.",
         imageUrl: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&q=80",
         veg: true
-      },
-      {
-        id: 16,
-        name: "Chilled Cold Drink",
-        category: "Drinks & Tea",
-        price: 40,
-        description: "Refreshing cold carbonated beverage (300ml bottle/can).",
-        imageUrl: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=600&q=80",
-        veg: true
-      },
-      {
-        id: 17,
-        name: "Fresh Lime Soda",
-        category: "Drinks & Tea",
-        price: 80,
-        description: "Chilled fizzy drink prepared with freshly squeezed lemon juice.",
-        imageUrl: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&q=80",
-        veg: true
       }
     ];
 
-    let currentUser = null;
+    let appliedCoupon = "";
 
     function renderMenu(items) {
       const container = document.getElementById('menu-container');
@@ -549,11 +482,8 @@
     function updatePortionPrice(itemId) {
       const portion = document.getElementById(`portion_${itemId}`).value;
       const priceDisplay = document.getElementById(`price_display_${itemId}`);
-      if (portion.includes('160')) {
-        priceDisplay.innerText = '₹160';
-      } else {
-        priceDisplay.innerText = '₹80';
-      }
+      if (portion.includes('160')) priceDisplay.innerText = '₹160';
+      else priceDisplay.innerText = '₹80';
     }
 
     function filterMenu(category, btn) {
@@ -565,12 +495,12 @@
       } else {
         const filtered = menuItems.filter(i => {
           const cat = i.category.toLowerCase();
+          if (category === 'diy') return cat.includes('diy');
           if (category === 'offers') return cat.includes('offer');
           if (category === 'snacks') return cat.includes('snack');
-          if (category === 'veg') return i.veg && !cat.includes('snack');
+          if (category === 'veg') return i.veg && !cat.includes('snack') && !cat.includes('diy');
           if (category === 'non-veg') return !i.veg;
           if (category === 'dessert') return cat.includes('dessert');
-          if (category === 'drinks') return cat.includes('drink');
           return true;
         });
         renderMenu(filtered);
@@ -579,62 +509,50 @@
 
     function directOrder(itemName, price, itemId) {
       let customText = '';
-      
       const spiceElem = document.getElementById(`spice_${itemId}`);
-      if (spiceElem) {
-        customText += ` (Preference: ${spiceElem.value})`;
-      }
+      if (spiceElem) customText += `\n- Preference: ${spiceElem.value}`;
 
       const portionElem = document.getElementById(`portion_${itemId}`);
-      if (portionElem) {
-        customText += ` (${portionElem.value})`;
-      }
+      if (portionElem) customText += `\n- Portion: ${portionElem.value}`;
 
       const currentPriceText = document.getElementById(`price_display_${itemId}`) ? document.getElementById(`price_display_${itemId}`).innerText : `₹${price}`;
 
-      const message = `Hello! I would like to order:\n- *${itemName}*${customText} @ ${currentPriceText}`;
+      let couponText = appliedCoupon ? `\n- Applied Coupon: *${appliedCoupon}*` : '';
+
+      const message = `*NEW ORDER - ROYAL HERITAGE*\n\n- *Item:* ${itemName}${customText}\n- *Amount:* ${currentPriceText}${couponText}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
     function orderCustomCombo() {
       const snack = document.getElementById('comboSnack').value;
       const beverage = document.getElementById('comboBeverage').value;
-      const message = `Hello! I want to order Custom Combo Offer (₹119):\n- *Snack:* ${snack}\n- *Beverage:* ${beverage}`;
+      const message = `*NEW COMBO ORDER (₹119)*\n\n- *Snack:* ${snack}\n- *Beverage:* ${beverage}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function orderMysteryBox() {
+      const message = `*MYSTERY SURPRISE BOX ORDER (₹129)*\n\n- *Selection:* Chef's Special Surprise Box\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
     function spinWheel() {
-      const prizes = ["10% OFF Code: ROYAL10", "Free Lime Soda Code: LIME50", "50 Extra Points", "Try Again Tomorrow!"];
+      const prizes = ["10% OFF Code: ROYAL10", "Free Kulhad Chai Code: FREECHAI", "Flat ₹20 OFF Code: SAVE20"];
       const prize = prizes[Math.floor(Math.random() * prizes.length)];
-      document.getElementById('wheelResult').innerText = `🎉 You Won: ${prize}`;
+      appliedCoupon = prize;
+      document.getElementById('wheelResult').innerText = `🎉 You Won: ${prize}\n(Coupon automatically attached to your next order!)`;
+      document.getElementById('spinBtn').disabled = true;
+      document.getElementById('spinBtn').style.opacity = '0.5';
     }
 
-    function openLoginModal() {
-      if (currentUser) {
-        document.getElementById('profileModal').style.display = 'flex';
-      } else {
-        document.getElementById('authModal').style.display = 'flex';
-      }
-    }
-
+    function openSpinModal() { document.getElementById('wheelModal').style.display = 'flex'; }
+    function openLoginModal() { document.getElementById('authModal').style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    function loginWithMobile() {
-      const phone = document.getElementById('userPhone').value.trim();
-      if (phone.length === 10) {
-        currentUser = { phone, name: '', points: 50 };
-        closeModal('authModal');
-        document.getElementById('profileModal').style.display = 'flex';
-      } else {
-        alert('Please enter valid 10-digit mobile number');
-      }
-    }
-
-    function saveProfile(e) {
-      e.preventDefault();
-      currentUser.name = document.getElementById('custName').value;
-      alert('Profile details saved!');
-      closeModal('profileModal');
+    function saveProfile() {
+      const name = document.getElementById('custName').value;
+      alert(`Welcome ${name || 'Valued Customer'}! Profile details saved.`);
+      closeModal('authModal');
     }
 
     renderMenu(menuItems);
