@@ -3,184 +3,197 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Royal Heritage Menu & Loyalty</title>
+  <title>Royal Heritage - Gourmet Menu & Loyalty</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+    :root {
+      --primary-gold: #d4af37;
+      --gold-hover: #f3e5ab;
+      --bg-dark: #0f0c0a;
+      --card-bg: rgba(25, 22, 18, 0.9);
+      --text-main: #f1f1f1;
+      --text-muted: #b0a898;
+      --accent-green: #27ae60;
+      --accent-red: #e74c3c;
+      --accent-orange: #e67e22;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
     body {
-      font-family: 'Segoe UI', Georgia, serif, sans-serif;
-      background: linear-gradient(rgba(15, 12, 10, 0.92), rgba(15, 12, 10, 0.95)), 
+      background: linear-gradient(rgba(15, 12, 10, 0.93), rgba(15, 12, 10, 0.96)), 
                   url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&q=80') center/cover fixed;
-      color: #f1f1f1;
-      padding-bottom: 60px;
+      color: var(--text-main);
+      padding-bottom: 80px;
       min-height: 100vh;
     }
 
+    /* Header */
     header {
-      background: rgba(0, 0, 0, 0.85);
-      border-bottom: 2px solid #d4af37;
-      padding: 20px 30px;
+      background: rgba(0, 0, 0, 0.88);
+      border-bottom: 2px solid var(--primary-gold);
+      padding: 18px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
     }
-    .brand h1 { font-size: 26px; color: #d4af37; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-    .brand p { font-size: 13px; color: #e0d0b0; font-style: italic; }
+    .brand h1 { font-size: 24px; color: var(--primary-gold); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+    .brand p { font-size: 12px; color: var(--text-muted); font-style: italic; }
 
-    .btn-login {
-      background: linear-gradient(135deg, #d4af37, #aa7c11);
+    .header-actions { display: flex; gap: 10px; }
+    .btn-gold {
+      background: linear-gradient(135deg, var(--primary-gold), #aa7c11);
       color: #111;
       border: none;
-      padding: 10px 20px;
+      padding: 9px 18px;
       border-radius: 25px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
       transition: all 0.3s;
     }
-    .btn-login:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(212, 175, 55, 0.5); }
+    .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); }
 
-    .banner-container { max-width: 900px; margin: 20px auto 0; padding: 0 15px; }
+    /* Announcement Banner */
+    .banner-container { max-width: 950px; margin: 20px auto 0; padding: 0 15px; }
     .special-banner {
       background: linear-gradient(135deg, #c0392b, #8e44ad);
-      color: #ffffff;
-      border-radius: 14px;
-      padding: 18px 24px;
+      color: #fff;
+      border-radius: 12px;
+      padding: 16px 20px;
       display: flex;
       align-items: center;
-      gap: 18px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      gap: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
     }
-    .banner-icon { font-size: 36px; background: rgba(255, 255, 255, 0.2); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .banner-text h3 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-    .banner-text p { font-size: 14px; color: #f8f9fa; opacity: 0.95; }
+    .banner-icon { font-size: 30px; background: rgba(255, 255, 255, 0.2); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-    .container { max-width: 900px; margin: 25px auto; padding: 0 15px; }
+    .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
 
-    .categories { display: flex; gap: 12px; overflow-x: auto; padding: 10px 0 20px; }
+    /* Custom Combo Builder Box */
+    .combo-builder-box {
+      background: linear-gradient(135deg, rgba(40, 30, 20, 0.9), rgba(20, 15, 10, 0.95));
+      border: 2px dashed var(--primary-gold);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    }
+    .combo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .combo-header h3 { color: var(--primary-gold); font-size: 20px; }
+    .combo-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 18px; }
+    @media(max-width: 600px) { .combo-steps { grid-template-columns: 1fr; } }
+    
+    .combo-select-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+    .combo-select-group select {
+      width: 100%; padding: 10px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 8px; color: #fff; outline: none;
+    }
+
+    /* Category Buttons */
+    .categories { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; }
     .cat-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      color: #e0e0e0;
-      padding: 9px 22px;
-      border-radius: 30px;
-      font-size: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #ddd;
+      padding: 8px 18px;
+      border-radius: 25px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.3s ease;
+      transition: all 0.3s;
     }
     .cat-btn:hover, .cat-btn.active {
-      background: #d4af37;
+      background: var(--primary-gold);
       color: #111;
-      border-color: #d4af37;
+      border-color: var(--primary-gold);
       box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
     }
 
-    .section-title { font-size: 22px; margin: 30px 0 18px; text-transform: uppercase; border-left: 4px solid #d4af37; padding-left: 12px; color: #d4af37; letter-spacing: 1px; }
-    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 22px; }
+    /* Menu Cards */
+    .section-title { font-size: 20px; margin: 25px 0 15px; text-transform: uppercase; border-left: 4px solid var(--primary-gold); padding-left: 10px; color: var(--primary-gold); letter-spacing: 1px; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 20px; }
 
     .card {
-      background: rgba(25, 22, 18, 0.85);
+      background: var(--card-bg);
       border: 1px solid rgba(212, 175, 55, 0.2);
       border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
       display: flex;
       flex-direction: column;
-      backdrop-filter: blur(5px);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s, border-color 0.3s;
     }
-    .card:hover { transform: translateY(-5px); border-color: rgba(212, 175, 55, 0.6); }
-    .card-img-container { width: 100%; height: 180px; background: #2a2a2a; position: relative; }
+    .card:hover { transform: translateY(-4px); border-color: rgba(212, 175, 55, 0.6); }
+    .card-img-container { width: 100%; height: 170px; position: relative; background: #222; }
     .card-img { width: 100%; height: 100%; object-fit: cover; }
 
-    .badge { position: absolute; top: 12px; right: 12px; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; color: white; text-transform: uppercase; }
-    .badge-veg { background-color: #2e7d32; }
-    .badge-nonveg { background-color: #c62828; }
-    .badge-offer { background-color: #e67e22; }
+    .badge-tag { position: absolute; top: 10px; right: 10px; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; color: white; text-transform: uppercase; }
+    .badge-veg { background-color: var(--accent-green); }
+    .badge-nonveg { background-color: var(--accent-red); }
+    .badge-offer { background-color: var(--accent-orange); }
 
-    .card-body { padding: 18px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-    .item-name { font-size: 18px; font-weight: 700; color: #f5e6c8; margin-bottom: 6px; }
-    .item-desc { font-size: 13px; color: #b0a898; margin-bottom: 15px; line-height: 1.4; }
+    .card-body { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .item-name { font-size: 17px; font-weight: 700; color: #f5e6c8; margin-bottom: 4px; }
+    .item-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4; }
+
+    .custom-options { margin-bottom: 12px; font-size: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .custom-options select, .custom-options label {
+      background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(212, 175, 55, 0.3); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 11px;
+    }
 
     .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-    .price { font-size: 20px; font-weight: 700; color: #d4af37; }
-    .old-price { font-size: 14px; text-decoration: line-through; color: #888; margin-right: 6px; }
+    .price { font-size: 18px; font-weight: 700; color: var(--primary-gold); }
+    .old-price { font-size: 13px; text-decoration: line-through; color: #777; margin-right: 5px; }
 
-    .order-btn { background: #25d366; color: white; padding: 9px 16px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 13px; }
+    .order-btn {
+      background: var(--accent-green);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 12px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
 
+    /* Modal Overlay & Card */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(6px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
+      display: none; justify-content: center; align-items: center; z-index: 1000;
     }
     .modal-card {
-      background: #1a1612;
-      border: 1px solid #d4af37;
-      width: 90%;
-      max-width: 440px;
-      border-radius: 16px;
-      padding: 25px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-      position: relative;
+      background: #1a1612; border: 1px solid var(--primary-gold);
+      width: 90%; max-width: 440px; border-radius: 16px; padding: 22px;
+      position: relative; max-height: 90vh; overflow-y: auto;
     }
-    .close-btn { position: absolute; top: 15px; right: 18px; color: #d4af37; font-size: 22px; cursor: pointer; }
-    .modal-title { font-size: 20px; color: #d4af37; margin-bottom: 15px; text-align: center; font-weight: 700; }
-    
-    .form-group { margin-bottom: 14px; }
-    .form-group label { display: block; font-size: 12px; color: #d4af37; margin-bottom: 5px; }
+    .close-btn { position: absolute; top: 12px; right: 16px; color: var(--primary-gold); font-size: 22px; cursor: pointer; }
+    .modal-title { font-size: 18px; color: var(--primary-gold); margin-bottom: 15px; text-align: center; font-weight: 700; }
+
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; color: var(--primary-gold); margin-bottom: 4px; }
     .form-control {
-      width: 100%;
-      padding: 10px 14px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(212,175,55,0.3);
-      border-radius: 8px;
-      color: #fff;
-      font-size: 14px;
-      outline: none;
-    }
-    .form-control:focus { border-color: #d4af37; }
-    
-    .submit-btn {
-      width: 100%;
-      padding: 12px;
-      background: #d4af37;
-      color: #111;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-      font-size: 15px;
+      width: 100%; padding: 9px 12px; background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(212,175,55,0.3); border-radius: 8px; color: #fff; font-size: 13px; outline: none;
     }
 
-    .loyalty-card {
-      background: linear-gradient(135deg, #2a2015, #15100a);
-      border: 1px dashed #d4af37;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 18px;
-      text-align: center;
-    }
-    .loyalty-pts { font-size: 32px; font-weight: bold; color: #d4af37; }
-    .reward-badge {
-      background: #e67e22;
-      color: #fff;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-      display: inline-block;
-      margin-top: 8px;
+    /* Gamification: Spin Wheel Container */
+    .wheel-box { text-align: center; margin: 15px 0; }
+    .wheel-btn { background: var(--accent-orange); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+
+    /* Floating Cart Badge */
+    .cart-float-btn {
+      position: fixed; bottom: 20px; right: 20px;
+      background: var(--primary-gold); color: #111;
+      padding: 12px 20px; border-radius: 30px; font-weight: bold;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5); cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 99;
     }
   </style>
 </head>
@@ -189,148 +202,179 @@
   <header>
     <div class="brand">
       <h1>Royal Heritage</h1>
-      <p>Fine Dining & Loyalty Club</p>
+      <p>Gourmet Snacks & Dining Club</p>
     </div>
-    <button class="btn-login" id="userBtn" onclick="openLoginModal()">Login / Profile</button>
+    <div class="header-actions">
+      <button class="btn-gold" onclick="openLoginModal()">Login / Profile</button>
+    </div>
   </header>
 
   <!-- Celebration Banner -->
   <div class="banner-container" id="banner-container" style="display: none;">
     <div class="special-banner">
       <div class="banner-icon" id="banner-icon">🎉</div>
-      <div class="banner-text">
+      <div>
         <h3 id="banner-title">Happy Birthday!</h3>
-        <p id="banner-msg">Enjoy a complimentary signature dessert on us today!</p>
+        <p id="banner-msg">Enjoy a complimentary Gulab Jamun with your order today!</p>
       </div>
     </div>
   </div>
 
   <div class="container">
+
+    <!-- Interactive Custom Combo Builder -->
+    <div class="combo-builder-box">
+      <div class="combo-header">
+        <h3>🍔 Make Your Own Combo Pack</h3>
+        <span style="background: var(--accent-orange); color: #fff; font-size: 11px; padding: 4px 8px; border-radius: 4px; font-weight: bold;">FLAT ₹119</span>
+      </div>
+      <div class="combo-steps">
+        <div class="combo-select-group">
+          <label>Step 1: Choose Snack</label>
+          <select id="comboSnack">
+            <option value="Classic Vada Pav">Classic Vada Pav (Veg)</option>
+            <option value="Cheese Blast Vada Pav">Cheese Blast Vada Pav (+₹20)</option>
+            <option value="Peri Peri Fries">Peri Peri Fries</option>
+          </select>
+        </div>
+        <div class="combo-select-group">
+          <label>Step 2: Choose Beverage</label>
+          <select id="comboBeverage">
+            <option value="Fresh Lime Soda">Fresh Lime Soda</option>
+            <option value="Masala Kulhad Chai">Masala Kulhad Chai</option>
+            <option value="Chilled Cold Coffee">Chilled Cold Coffee (+₹15)</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-gold" style="width: 100%; padding: 11px;" onclick="orderCustomCombo()">Order Combo via WhatsApp @ ₹119</button>
+    </div>
+
+    <!-- Category Selector -->
     <div class="categories">
       <button class="cat-btn active" onclick="filterMenu('all', this)">All Items</button>
       <button class="cat-btn" onclick="filterMenu('offers', this)">🔥 Special Offers</button>
-      <button class="cat-btn" onclick="filterMenu('snacks', this)">Snacks</button>
-      <button class="cat-btn" onclick="filterMenu('veg', this)">Veg</button>
+      <button class="cat-btn" onclick="filterMenu('snacks', this)">Snacks & Vada Pav</button>
+      <button class="cat-btn" onclick="filterMenu('veg', this)">Veg Specials</button>
       <button class="cat-btn" onclick="filterMenu('non-veg', this)">Non-Veg</button>
       <button class="cat-btn" onclick="filterMenu('dessert', this)">Desserts</button>
-      <button class="cat-btn" onclick="filterMenu('softdrink', this)">Soft Drinks</button>
+      <button class="cat-btn" onclick="filterMenu('drinks', this)">Drinks & Tea</button>
     </div>
 
     <div id="menu-container"></div>
   </div>
 
-  <!-- Modal 1: Mobile Login -->
+  <!-- Modal 1: Login -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-card">
       <span class="close-btn" onclick="closeModal('authModal')">&times;</span>
-      <div>
-        <div class="modal-title">Customer Login</div>
-        <div class="form-group">
-          <label>Mobile Number</label>
-          <input type="tel" id="userPhone" class="form-control" placeholder="10-digit mobile number" maxlength="10">
-        </div>
-        <button class="submit-btn" onclick="loginWithMobile()">Login / Continue</button>
+      <div class="modal-title">Customer Loyalty Login</div>
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input type="tel" id="userPhone" class="form-control" placeholder="Enter 10-digit phone number" maxlength="10">
       </div>
+      <button class="btn-gold" style="width: 100%; margin-top: 10px;" onclick="loginWithMobile()">Continue</button>
     </div>
   </div>
 
-  <!-- Modal 2: Customer Profile & Loyalty Form -->
+  <!-- Modal 2: Loyalty Profile & Spin Wheel -->
   <div class="modal-overlay" id="profileModal">
     <div class="modal-card">
       <span class="close-btn" onclick="closeModal('profileModal')">&times;</span>
-      <div class="modal-title">My Loyalty Profile</div>
+      <div class="modal-title">My Loyalty Dashboard</div>
 
-      <div class="loyalty-card">
-        <div style="font-size: 12px; color: #aaa;">Your Loyalty Balance</div>
-        <div class="loyalty-pts" id="displayPoints">0 PTS</div>
-        <div style="font-size: 11px; color: #e0d0b0; margin-top: 4px;" id="displayVisits">Restaurant Visits: 0</div>
-        <div id="rewardBox"></div>
+      <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 15px; border: 1px solid var(--primary-gold);">
+        <div style="font-size: 12px; color: #aaa;">Your Rewards Points</div>
+        <div style="font-size: 30px; font-weight: bold; color: var(--primary-gold);" id="displayPoints">50 PTS</div>
+      </div>
+
+      <div class="wheel-box">
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Spin to win instant discount code!</p>
+        <button class="wheel-btn" onclick="spinWheel()">🎡 Spin Daily Lucky Wheel</button>
+        <div id="wheelResult" style="margin-top: 10px; font-size: 13px; font-weight: bold; color: var(--primary-gold);"></div>
       </div>
 
       <form id="profileForm" onsubmit="saveProfile(event)">
         <div class="form-group">
           <label>Full Name</label>
-          <input type="text" id="custName" class="form-control" required placeholder="Enter your name">
+          <input type="text" id="custName" class="form-control" required placeholder="Enter name">
         </div>
         <div class="form-group">
           <label>Date of Birth (DOB)</label>
           <input type="date" id="custDOB" class="form-control" required>
         </div>
-        <div class="form-group">
-          <label>Marital Status</label>
-          <select id="custMarital" class="form-control" onchange="toggleMarriageFields()">
-            <option value="Single">Single</option>
-            <option value="Married">Married</option>
-          </select>
-        </div>
-        
-        <div id="marriedFields" style="display: none;">
-          <div class="form-group">
-            <label>Anniversary Date</label>
-            <input type="date" id="custAnniversary" class="form-control">
-          </div>
-          <div class="form-group">
-            <label>Spouse Date of Birth</label>
-            <input type="date" id="custSpouseDOB" class="form-control">
-          </div>
-        </div>
-
-        <button type="submit" class="submit-btn" id="saveProfileBtn">Save</button>
+        <button type="submit" class="btn-gold" style="width: 100%; margin-top: 10px;">Save Profile</button>
       </form>
     </div>
   </div>
 
   <script>
-    const GOOGLE_SHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykG77O1lMLpPA_3W3_SjUmVU5db7gNKXJPF2m6S8pcdePBl-U--PwzNYAKCYAh6X99/exec";
+    const RESTAURANT_PHONE = "919876543210"; // Apna WhatsApp Number yahan dalein
 
     const menuItems = [
       {
+        id: 1,
+        name: "Mumbai Style Vada Pav",
+        category: "Snacks",
+        price: 49,
+        description: "Fresh potato vada inside soft pav with spicy dry garlic chutney & fried green chili.",
+        imageUrl: "vada pav.jpg",
+        veg: true,
+        customizable: true
+      },
+      {
+        id: 2,
+        name: "Cheese Blast Vada Pav",
+        category: "Snacks",
+        price: 69,
+        description: "Loaded with melted mozzarella cheese inside potato vada for extra taste.",
+        imageUrl: "vada pav.jpg",
+        veg: true,
+        customizable: true
+      },
+      {
+        id: 3,
         name: "Vada Pav + Fresh Lime Combo",
         category: "Special Offers",
         price: 119,
         originalPrice: 129,
-        description: "Classic Mumbai Vada Pav served along with chilled Fresh Lime Soda.",
+        description: "1 Classic Vada Pav served along with chilled refreshing Fresh Lime Soda.",
         imageUrl: "vada pav.jpg",
         veg: true,
         isOffer: true
       },
       {
-        name: "Vada Pav",
-        category: "Snacks",
-        price: 49,
-        description: "Spicy potato dumpling stuffed inside a soft bun with spicy garlic chutney & fried green chili.",
-        imageUrl: "vada pav.jpg",
-        veg: true
-      },
-      {
+        id: 4,
         name: "Butter Chicken",
         category: "Non-Veg",
         price: 369,
-        description: "Rich creamy tomato gravy with juicy charcoal-grilled chicken.",
+        description: "Rich creamy tomato gravy with tender charcoal-grilled chicken pieces.",
         imageUrl: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&q=80",
         veg: false
       },
       {
-        name: "Gulab Jamun",
-        category: "Desserts",
-        price: 90,
-        description: "Soft fried dough balls soaked in rose scented sweet sugar syrup.",
-        imageUrl: "gulab jamun.avif",
-        veg: true
-      },
-      {
+        id: 5,
         name: "Paneer Tikka",
-        category: "Veg",
+        category: "Veg Specials",
         price: 260,
-        description: "Marinated cottage cheese cubes grilled to perfection in tandoor.",
+        description: "Marinated cottage cheese cubes grilled to perfection in traditional tandoor.",
         imageUrl: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&q=80",
         veg: true
       },
       {
+        id: 6,
+        name: "Gulab Jamun (2 Pcs)",
+        category: "Desserts",
+        price: 90,
+        description: "Warm dough balls soaked in cardamom flavored sweet syrup.",
+        imageUrl: "gulab jamun.avif",
+        veg: true
+      },
+      {
+        id: 7,
         name: "Fresh Lime Soda",
-        category: "Soft Drinks",
+        category: "Drinks & Tea",
         price: 80,
-        description: "Refreshing fizzy drink made with fresh lemon and mint.",
+        description: "Chilled fizzy drink prepared with freshly squeezed lemon juice.",
         imageUrl: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&q=80",
         veg: true
       }
@@ -351,11 +395,10 @@
       for (const cat in grouped) {
         html += `<h2 class="section-title">${cat}</h2><div class="menu-grid">`;
         grouped[cat].forEach(item => {
-          const waMsg = encodeURIComponent(`Hello! I want to order: ${item.name} (₹${item.price})`);
           html += `
             <div class="card">
               <div class="card-img-container">
-                <span class="badge ${item.isOffer ? 'badge-offer' : (item.veg ? 'badge-veg' : 'badge-nonveg')}">
+                <span class="badge-tag ${item.isOffer ? 'badge-offer' : (item.veg ? 'badge-veg' : 'badge-nonveg')}">
                   ${item.isOffer ? 'OFFER' : (item.veg ? 'Veg' : 'Non-Veg')}
                 </span>
                 <img src="${item.imageUrl}" class="card-img" alt="${item.name}">
@@ -364,13 +407,24 @@
                 <div>
                   <div class="item-name">${item.name}</div>
                   <div class="item-desc">${item.description}</div>
+                  ${item.customizable ? `
+                    <div class="custom-options">
+                      <select id="spice_${item.id}">
+                        <option value="Medium Spicy">🌶️ Medium Spicy</option>
+                        <option value="Less Spicy"> Mild</option>
+                        <option value="Extra Spicy">🔥🔥 Extra Spicy</option>
+                      </select>
+                    </div>
+                  ` : ''}
                 </div>
                 <div class="card-footer">
                   <div>
                     ${item.originalPrice ? `<span class="old-price">₹${item.originalPrice}</span>` : ''}
                     <span class="price">₹${item.price}</span>
                   </div>
-                  <a href="https://wa.me/919876543210?text=${waMsg}" target="_blank" class="order-btn">Order Now</a>
+                  <button class="order-btn" onclick="directOrder('${item.name}', ${item.price}, ${item.id})">
+                    Order WhatsApp
+                  </button>
                 </div>
               </div>
             </div>
@@ -392,142 +446,66 @@
           const cat = i.category.toLowerCase();
           if (category === 'offers') return cat.includes('offer');
           if (category === 'snacks') return cat.includes('snack');
+          if (category === 'veg') return i.veg && !cat.includes('snack');
+          if (category === 'non-veg') return !i.veg;
           if (category === 'dessert') return cat.includes('dessert');
-          if (category === 'softdrink') return cat.includes('drink');
-          return cat === category.toLowerCase();
+          if (category === 'drinks') return cat.includes('drink');
+          return true;
         });
         renderMenu(filtered);
       }
     }
 
+    function directOrder(itemName, price, itemId) {
+      let spiceText = '';
+      const spiceElem = document.getElementById(`spice_${itemId}`);
+      if (spiceElem) {
+        spiceText = ` (Preference: ${spiceElem.value})`;
+      }
+
+      const message = `Hello! I would like to order:\n- *${itemName}*${spiceText} @ ₹${price}`;
+      window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function orderCustomCombo() {
+      const snack = document.getElementById('comboSnack').value;
+      const beverage = document.getElementById('comboBeverage').value;
+      const message = `Hello! I want to order Custom Combo Offer (₹119):\n- *Snack:* ${snack}\n- *Beverage:* ${beverage}`;
+      window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function spinWheel() {
+      const prizes = ["10% OFF Code: ROYAL10", "Free Lime Soda Code: LIME50", "50 Extra Points", "Try Again Tomorrow!"];
+      const prize = prizes[Math.floor(Math.random() * prizes.length)];
+      document.getElementById('wheelResult').innerText = `🎉 You Won: ${prize}`;
+    }
+
     function openLoginModal() {
       if (currentUser) {
-        openProfileModal();
+        document.getElementById('profileModal').style.display = 'flex';
       } else {
         document.getElementById('authModal').style.display = 'flex';
       }
     }
-    
-    function openProfileModal() {
-      document.getElementById('profileModal').style.display = 'flex';
-      loadUserData();
-    }
-    
-    function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
-    }
+
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
     function loginWithMobile() {
       const phone = document.getElementById('userPhone').value.trim();
-      if (phone.length === 10 && !isNaN(phone)) {
-        currentUser = JSON.parse(localStorage.getItem('user_' + phone)) || {
-          phone: phone,
-          name: '',
-          dob: '',
-          marital: 'Single',
-          anniversary: '',
-          spouseDob: '',
-          points: 0,
-          visits: 0
-        };
-
+      if (phone.length === 10) {
+        currentUser = { phone, name: '', points: 50 };
         closeModal('authModal');
-        document.getElementById('userBtn').innerText = currentUser.name ? currentUser.name : 'My Profile';
-        openProfileModal();
+        document.getElementById('profileModal').style.display = 'flex';
       } else {
-        alert('Please enter a valid 10-digit mobile number.');
+        alert('Please enter valid 10-digit mobile number');
       }
     }
 
-    function toggleMarriageFields() {
-      const status = document.getElementById('custMarital').value;
-      document.getElementById('marriedFields').style.display = (status === 'Married') ? 'block' : 'none';
-    }
-
-    function loadUserData() {
-      if (!currentUser) return;
-      document.getElementById('custName').value = currentUser.name || '';
-      document.getElementById('custDOB').value = currentUser.dob || '';
-      document.getElementById('custMarital').value = currentUser.marital || 'Single';
-      document.getElementById('custAnniversary').value = currentUser.anniversary || '';
-      document.getElementById('custSpouseDOB').value = currentUser.spouseDob || '';
-      toggleMarriageFields();
-
-      document.getElementById('displayPoints').innerText = `${currentUser.points || 0} PTS`;
-      document.getElementById('displayVisits').innerText = `Restaurant Visits: ${currentUser.visits || 0}`;
-
-      const rewardBox = document.getElementById('rewardBox');
-      if ((currentUser.points || 0) >= 100) {
-        rewardBox.innerHTML = `<span class="reward-badge">🎁 Surprise Gift Unlocked! Show code "ROYAL100" to Manager</span>`;
-      } else {
-        rewardBox.innerHTML = `<span style="font-size: 11px; color: #888;">Earn ${100 - (currentUser.points || 0)} more points to unlock a free Gift!</span>`;
-      }
-
-      checkCelebrations();
-    }
-
-    async function saveProfile(e) {
+    function saveProfile(e) {
       e.preventDefault();
-      const saveBtn = document.getElementById('saveProfileBtn');
-      saveBtn.innerText = "Saving...";
-      saveBtn.disabled = true;
-
       currentUser.name = document.getElementById('custName').value;
-      currentUser.dob = document.getElementById('custDOB').value;
-      currentUser.marital = document.getElementById('custMarital').value;
-      currentUser.anniversary = document.getElementById('custAnniversary').value;
-      currentUser.spouseDob = document.getElementById('custSpouseDOB').value;
-
-      localStorage.setItem('user_' + currentUser.phone, JSON.stringify(currentUser));
-
-      if (GOOGLE_SHEET_SCRIPT_URL !== "") {
-        try {
-          await fetch(GOOGLE_SHEET_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: "saveProfile", ...currentUser })
-          });
-        } catch (err) {
-          console.error("Google Sheet Sync Error: ", err);
-        }
-      }
-
-      saveBtn.innerText = "Save";
-      saveBtn.disabled = false;
-      document.getElementById('userBtn').innerText = currentUser.name;
-      alert('Profile Saved Successfully!');
+      alert('Profile details saved!');
       closeModal('profileModal');
-      checkCelebrations();
-    }
-
-    function checkCelebrations() {
-      if (!currentUser) return;
-      const today = new Date();
-      const todayMD = `${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-
-      let show = false;
-      let title = '';
-      let icon = '🎉';
-
-      if (currentUser.dob && currentUser.dob.endsWith(todayMD)) {
-        show = true;
-        title = `Happy Birthday ${currentUser.name}! 🎂`;
-        icon = '🎂';
-      } else if (currentUser.marital === 'Married' && currentUser.anniversary && currentUser.anniversary.endsWith(todayMD)) {
-        show = true;
-        title = `Happy Anniversary ${currentUser.name}! 💍`;
-        icon = '💍';
-      }
-
-      const bannerContainer = document.getElementById('banner-container');
-      if (show) {
-        bannerContainer.style.display = 'block';
-        document.getElementById('banner-icon').innerText = icon;
-        document.getElementById('banner-title').innerText = title;
-      } else {
-        bannerContainer.style.display = 'none';
-      }
     }
 
     renderMenu(menuItems);
