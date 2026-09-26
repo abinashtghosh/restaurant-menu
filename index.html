@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Royal Heritage - Innovative Smart Menu</title>
+  <title>Royal Heritage - Smart Menu & Interactive Wheel</title>
   <style>
     :root {
       --primary-gold: #d4af37;
@@ -15,7 +15,6 @@
       --accent-green: #27ae60;
       --accent-red: #e74c3c;
       --accent-orange: #e67e22;
-      --accent-purple: #8e44ad;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
@@ -59,20 +58,6 @@
     .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); }
 
     .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
-
-    /* Innovative Banners */
-    .special-banner {
-      background: linear-gradient(135deg, #c0392b, #8e44ad);
-      color: #fff;
-      border-radius: 12px;
-      padding: 15px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-    }
-    .banner-icon { font-size: 28px; background: rgba(255, 255, 255, 0.2); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
     /* Mystery Box Highlight */
     .mystery-container {
@@ -187,27 +172,69 @@
     /* Modal Overlay */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.88); backdrop-filter: blur(6px);
       display: none; justify-content: center; align-items: center; z-index: 1000;
     }
     .modal-card {
       background: #1a1612; border: 1px solid var(--primary-gold);
       width: 90%; max-width: 420px; border-radius: 16px; padding: 20px;
-      position: relative; max-height: 90vh; overflow-y: auto;
+      position: relative; max-height: 90vh; overflow-y: auto; text-align: center;
     }
     .close-btn { position: absolute; top: 10px; right: 15px; color: var(--primary-gold); font-size: 22px; cursor: pointer; }
-    .modal-title { font-size: 17px; color: var(--primary-gold); margin-bottom: 12px; text-align: center; font-weight: 700; }
+    .modal-title { font-size: 17px; color: var(--primary-gold); margin-bottom: 12px; font-weight: 700; }
 
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 11px; color: var(--primary-gold); margin-bottom: 4px; }
-    .form-control {
-      width: 100%; padding: 8px 12px; background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(212,175,55,0.3); border-radius: 8px; color: #fff; font-size: 12px; outline: none;
+    /* REAL CANVAS WHEEL STYLING */
+    .wheel-wrapper {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 10px auto;
     }
 
-    /* Wheel Animation Box */
-    .wheel-box { text-align: center; margin: 15px 0; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; }
-    .wheel-btn { background: var(--accent-orange); color: white; border: none; padding: 9px 18px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+    .pointer {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 22px solid var(--accent-red);
+      z-index: 10;
+    }
+
+    #wheelCanvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 4px solid var(--primary-gold);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+      transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+    }
+
+    .spin-btn {
+      background: linear-gradient(135deg, var(--accent-orange), #c0392b);
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+
+    .spin-btn:disabled { background: #555; cursor: not-allowed; }
+
+    #wheelResult {
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--primary-gold);
+      min-height: 24px;
+    }
   </style>
 </head>
 <body>
@@ -219,13 +246,12 @@
     </div>
     <div class="header-actions">
       <button class="btn-gold" onclick="openSpinModal()">🎡 Spin & Win</button>
-      <button class="btn-gold" onclick="openLoginModal()">👤 Profile</button>
     </div>
   </header>
 
   <div class="container">
 
-    <!-- Mystery Box Innovation -->
+    <!-- Mystery Box -->
     <div class="mystery-container">
       <div class="mystery-info">
         <h3>🎁 Chef's Mystery Surprise Box</h3>
@@ -278,42 +304,24 @@
     <div id="menu-container"></div>
   </div>
 
-  <!-- Spin Wheel Modal -->
+  <!-- Real Interactive Canvas Wheel Modal -->
   <div class="modal-overlay" id="wheelModal">
     <div class="modal-card">
       <span class="close-btn" onclick="closeModal('wheelModal')">&times;</span>
-      <div class="modal-title">🎡 Daily Lucky Spin & Win</div>
-      <div class="wheel-box">
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Spin the wheel to unlock exclusive discounts for today's order!</p>
-        <button class="wheel-btn" id="spinBtn" onclick="spinWheel()">SPIN NOW</button>
-        <div id="wheelResult" style="margin-top: 12px; font-size: 13px; font-weight: bold; color: var(--primary-gold);"></div>
-      </div>
-    </div>
-  </div>
+      <div class="modal-title">🎡 Real Lucky Spin & Win</div>
+      <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Spin the wheel to win instant free items or offers!</p>
 
-  <!-- Login/Profile Modal -->
-  <div class="modal-overlay" id="authModal">
-    <div class="modal-card">
-      <span class="close-btn" onclick="closeModal('authModal')">&times;</span>
-      <div class="modal-title">Customer Loyalty & Offers</div>
-      <div class="form-group">
-        <label>Full Name</label>
-        <input type="text" id="custName" class="form-control" placeholder="Enter your name">
+      <div class="wheel-wrapper">
+        <div class="pointer"></div>
+        <canvas id="wheelCanvas" width="280" height="280"></canvas>
       </div>
-      <div class="form-group">
-        <label>Mobile Number</label>
-        <input type="tel" id="userPhone" class="form-control" placeholder="Enter 10-digit phone" maxlength="10">
-      </div>
-      <div class="form-group">
-        <label>Date of Birth (For Birthday Treats 🎂)</label>
-        <input type="date" id="custDOB" class="form-control">
-      </div>
-      <button class="btn-gold" style="width: 100%; margin-top: 10px;" onclick="saveProfile()">Save Profile</button>
+
+      <button class="spin-btn" id="spinBtn" onclick="spinWheel()">SPIN NOW</button>
+      <div id="wheelResult"></div>
     </div>
   </div>
 
   <script>
-    // Updated Target WhatsApp Mobile Number
     const RESTAURANT_PHONE = "919204506060"; 
 
     const menuItems = [
@@ -368,34 +376,6 @@
       },
       {
         id: 6,
-        name: "Cheese Balls (5 Pcs)",
-        category: "Snacks",
-        price: 99,
-        description: "Crispy fried golden balls filled with gooey melted cheese and herbs.",
-        imageUrl: "https://images.unsplash.com/photo-1541529086526-db283c563270?w=600&q=80",
-        veg: true
-      },
-      {
-        id: 7,
-        name: "Chana Chilli (Veg)",
-        category: "Veg Specials",
-        price: 80,
-        description: "Crispy fried chickpeas tossed in spicy Indo-Chinese chilli garlic sauce.",
-        imageUrl: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80",
-        veg: true,
-        hasPortions: true
-      },
-      {
-        id: 8,
-        name: "Butter Chicken",
-        category: "Non-Veg",
-        price: 369,
-        description: "Rich creamy tomato gravy with tender charcoal-grilled chicken pieces.",
-        imageUrl: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&q=80",
-        veg: false
-      },
-      {
-        id: 9,
         name: "Gulab Jamun (2 Pcs)",
         category: "Desserts & Tea",
         price: 90,
@@ -404,7 +384,7 @@
         veg: true
       },
       {
-        id: 10,
+        id: 7,
         name: "Masala Kulhad Chai",
         category: "Desserts & Tea",
         price: 30,
@@ -451,15 +431,6 @@
                       </select>
                     </div>
                   ` : ''}
-
-                  ${item.hasPortions ? `
-                    <div class="custom-options">
-                      <select id="portion_${item.id}" onchange="updatePortionPrice(${item.id})">
-                        <option value="Half Plate (₹80)">Half Plate - ₹80</option>
-                        <option value="Full Plate (₹160)">Full Plate - ₹160</option>
-                      </select>
-                    </div>
-                  ` : ''}
                 </div>
                 <div class="card-footer">
                   <div>
@@ -477,13 +448,6 @@
         html += `</div>`;
       }
       container.innerHTML = html;
-    }
-
-    function updatePortionPrice(itemId) {
-      const portion = document.getElementById(`portion_${itemId}`).value;
-      const priceDisplay = document.getElementById(`price_display_${itemId}`);
-      if (portion.includes('160')) priceDisplay.innerText = '₹160';
-      else priceDisplay.innerText = '₹80';
     }
 
     function filterMenu(category, btn) {
@@ -512,14 +476,9 @@
       const spiceElem = document.getElementById(`spice_${itemId}`);
       if (spiceElem) customText += `\n- Preference: ${spiceElem.value}`;
 
-      const portionElem = document.getElementById(`portion_${itemId}`);
-      if (portionElem) customText += `\n- Portion: ${portionElem.value}`;
+      let couponText = appliedCoupon ? `\n- Reward Won: *${appliedCoupon}*` : '';
 
-      const currentPriceText = document.getElementById(`price_display_${itemId}`) ? document.getElementById(`price_display_${itemId}`).innerText : `₹${price}`;
-
-      let couponText = appliedCoupon ? `\n- Applied Coupon: *${appliedCoupon}*` : '';
-
-      const message = `*NEW ORDER - ROYAL HERITAGE*\n\n- *Item:* ${itemName}${customText}\n- *Amount:* ${currentPriceText}${couponText}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      const message = `*NEW ORDER - ROYAL HERITAGE*\n\n- *Item:* ${itemName}${customText}\n- *Amount:* ₹${price}${couponText}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
       
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
@@ -536,23 +495,76 @@
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
-    function spinWheel() {
-      const prizes = ["10% OFF Code: ROYAL10", "Free Kulhad Chai Code: FREECHAI", "Flat ₹20 OFF Code: SAVE20"];
-      const prize = prizes[Math.floor(Math.random() * prizes.length)];
-      appliedCoupon = prize;
-      document.getElementById('wheelResult').innerText = `🎉 You Won: ${prize}\n(Coupon automatically attached to your next order!)`;
-      document.getElementById('spinBtn').disabled = true;
-      document.getElementById('spinBtn').style.opacity = '0.5';
+    function openSpinModal() { 
+      document.getElementById('wheelModal').style.display = 'flex'; 
+      drawWheel();
     }
-
-    function openSpinModal() { document.getElementById('wheelModal').style.display = 'flex'; }
-    function openLoginModal() { document.getElementById('authModal').style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    function saveProfile() {
-      const name = document.getElementById('custName').value;
-      alert(`Welcome ${name || 'Valued Customer'}! Profile details saved.`);
-      closeModal('authModal');
+    /* REAL CANVAS WHEEL LOGIC */
+    const canvas = document.getElementById("wheelCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const wheelItems = [
+      { label: "Kulhad Chai", color: "#e67e22" },
+      { label: "Ice Cream", color: "#2980b9" },
+      { label: "Veg Salad", color: "#27ae60" },
+      { label: "Better Luck Next Time", color: "#c0392b" }
+    ];
+
+    const numSegments = wheelItems.length;
+    const arcSize = (2 * Math.PI) / numSegments;
+    let currentRotation = 0;
+
+    function drawWheel() {
+      const radius = canvas.width / 2;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < numSegments; i++) {
+        const angle = i * arcSize;
+        ctx.beginPath();
+        ctx.fillStyle = wheelItems[i].color;
+        ctx.moveTo(radius, radius);
+        ctx.arc(radius, radius, radius, angle, angle + arcSize);
+        ctx.lineTo(radius, radius);
+        ctx.fill();
+
+        ctx.save();
+        ctx.translate(radius, radius);
+        ctx.rotate(angle + arcSize / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#fff";
+        ctx.font = "bold 13px Arial";
+        ctx.fillText(wheelItems[i].label, radius - 15, 4);
+        ctx.restore();
+      }
+    }
+
+    function spinWheel() {
+      const spinBtn = document.getElementById("spinBtn");
+      const resultDiv = document.getElementById("wheelResult");
+
+      spinBtn.disabled = true;
+      resultDiv.innerText = "";
+
+      const randomIndex = Math.floor(Math.random() * numSegments);
+      const segmentDegrees = 360 / numSegments;
+      const targetDegree = 360 - (randomIndex * segmentDegrees) - (segmentDegrees / 2) - 90;
+      const extraSpins = 5 * 360; 
+      
+      currentRotation += extraSpins + (targetDegree - (currentRotation % 360));
+      canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+      setTimeout(() => {
+        spinBtn.disabled = false;
+        const wonItem = wheelItems[randomIndex].label;
+        if (wonItem === "Better Luck Next Time") {
+          resultDiv.innerText = "😔 Better Luck Next Time! Try tomorrow.";
+        } else {
+          appliedCoupon = `FREE ${wonItem}`;
+          resultDiv.innerText = `🎉 You Won: FREE ${wonItem}! (Attached to your next WhatsApp order)`;
+        }
+      }, 4000);
     }
 
     renderMenu(menuItems);
