@@ -27,7 +27,7 @@
       min-height: 100vh;
     }
 
-    /* Header */
+    /* Header & Customer Login Setup */
     header {
       background: rgba(0, 0, 0, 0.9);
       border-bottom: 2px solid var(--primary-gold);
@@ -43,7 +43,21 @@
     .brand h1 { font-size: 22px; color: var(--primary-gold); font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
     .brand p { font-size: 11px; color: var(--text-muted); font-style: italic; }
 
-    .header-actions { display: flex; gap: 8px; }
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+    
+    .user-profile {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--primary-gold);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--primary-gold);
+      font-weight: 600;
+    }
+
     .btn-gold {
       background: linear-gradient(135deg, var(--primary-gold), #aa7c11);
       color: #111;
@@ -56,6 +70,19 @@
       transition: all 0.3s;
     }
     .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary-gold);
+      border: 1px solid var(--primary-gold);
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-outline:hover { background: rgba(212, 175, 55, 0.2); }
 
     .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
 
@@ -183,11 +210,19 @@
     .close-btn { position: absolute; top: 10px; right: 15px; color: var(--primary-gold); font-size: 22px; cursor: pointer; }
     .modal-title { font-size: 17px; color: var(--primary-gold); margin-bottom: 12px; font-weight: 700; }
 
-    /* REAL CANVAS WHEEL STYLING */
+    /* Form Styles inside Modal */
+    .form-group { text-align: left; margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+    .form-group input {
+      width: 100%; padding: 10px; background: #0f0c0a; border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 8px; color: #fff; font-size: 13px; outline: none;
+    }
+
+    /* CANVAS WHEEL STYLING */
     .wheel-wrapper {
       position: relative;
-      width: 280px;
-      height: 280px;
+      width: 300px;
+      height: 300px;
       margin: 10px auto;
     }
 
@@ -208,7 +243,7 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      border: 4px solid var(--primary-gold);
+      border: 5px solid var(--primary-gold);
       box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
       transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
     }
@@ -239,6 +274,7 @@
 </head>
 <body>
 
+  <!-- Header with Customer Login Setup -->
   <header>
     <div class="brand">
       <h1>Royal Heritage</h1>
@@ -246,6 +282,11 @@
     </div>
     <div class="header-actions">
       <button class="btn-gold" onclick="openSpinModal()">🎡 Spin & Win</button>
+      <div id="userProfile" class="user-profile">
+        <span>👤 <span id="userNameDisplay">User</span></span>
+        <button onclick="logoutUser()" style="background:none; border:none; color:var(--accent-red); cursor:pointer; font-size:11px; margin-left:5px;">Logout</button>
+      </div>
+      <button id="loginBtnNav" class="btn-outline" onclick="openLoginModal()">Login</button>
     </div>
   </header>
 
@@ -304,7 +345,26 @@
     <div id="menu-container"></div>
   </div>
 
-  <!-- Real Interactive Canvas Wheel Modal -->
+  <!-- Customer Login Modal -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-card">
+      <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+      <div class="modal-title">👤 Customer Login / Signup</div>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="custName" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+          <label>Mobile Number</label>
+          <input type="tel" id="custPhone" placeholder="Enter 10-digit mobile number" required pattern="[0-9]{10}">
+        </div>
+        <button type="submit" class="btn-gold" style="width: 100%; margin-top: 10px;">Login & Continue</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Real Interactive Wheel Modal -->
   <div class="modal-overlay" id="wheelModal">
     <div class="modal-card">
       <span class="close-btn" onclick="closeModal('wheelModal')">&times;</span>
@@ -313,7 +373,7 @@
 
       <div class="wheel-wrapper">
         <div class="pointer"></div>
-        <canvas id="wheelCanvas" width="280" height="280"></canvas>
+        <canvas id="wheelCanvas" width="300" height="300"></canvas>
       </div>
 
       <button class="spin-btn" id="spinBtn" onclick="spinWheel()">SPIN NOW</button>
@@ -394,7 +454,37 @@
       }
     ];
 
+    let currentUser = JSON.parse(localStorage.getItem('royalUser')) || null;
     let appliedCoupon = "";
+
+    function checkUserStatus() {
+      if (currentUser) {
+        document.getElementById('loginBtnNav').style.display = 'none';
+        document.getElementById('userProfile').style.display = 'flex';
+        document.getElementById('userNameDisplay').innerText = currentUser.name;
+      } else {
+        document.getElementById('loginBtnNav').style.display = 'block';
+        document.getElementById('userProfile').style.display = 'none';
+      }
+    }
+
+    function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+    
+    function handleLogin(e) {
+      e.preventDefault();
+      const name = document.getElementById('custName').value;
+      const phone = document.getElementById('custPhone').value;
+      currentUser = { name, phone };
+      localStorage.setItem('royalUser', JSON.stringify(currentUser));
+      checkUserStatus();
+      closeModal('loginModal');
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('royalUser');
+      currentUser = null;
+      checkUserStatus();
+    }
 
     function renderMenu(items) {
       const container = document.getElementById('menu-container');
@@ -472,26 +562,29 @@
     }
 
     function directOrder(itemName, price, itemId) {
+      let userInfo = currentUser ? `\n- *Customer:* ${currentUser.name} (${currentUser.phone})` : '';
       let customText = '';
       const spiceElem = document.getElementById(`spice_${itemId}`);
       if (spiceElem) customText += `\n- Preference: ${spiceElem.value}`;
 
       let couponText = appliedCoupon ? `\n- Reward Won: *${appliedCoupon}*` : '';
 
-      const message = `*NEW ORDER - ROYAL HERITAGE*\n\n- *Item:* ${itemName}${customText}\n- *Amount:* ₹${price}${couponText}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      const message = `*NEW ORDER - ROYAL HERITAGE*${userInfo}\n\n- *Item:* ${itemName}${customText}\n- *Amount:* ₹${price}${couponText}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
       
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
     function orderCustomCombo() {
+      let userInfo = currentUser ? `\n- *Customer:* ${currentUser.name} (${currentUser.phone})` : '';
       const snack = document.getElementById('comboSnack').value;
       const beverage = document.getElementById('comboBeverage').value;
-      const message = `*NEW COMBO ORDER (₹119)*\n\n- *Snack:* ${snack}\n- *Beverage:* ${beverage}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      const message = `*NEW COMBO ORDER (₹119)*${userInfo}\n\n- *Snack:* ${snack}\n- *Beverage:* ${beverage}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
     function orderMysteryBox() {
-      const message = `*MYSTERY SURPRISE BOX ORDER (₹129)*\n\n- *Selection:* Chef's Special Surprise Box\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      let userInfo = currentUser ? `\n- *Customer:* ${currentUser.name} (${currentUser.phone})` : '';
+      const message = `*MYSTERY SURPRISE BOX ORDER (₹129)*${userInfo}\n\n- *Selection:* Chef's Special Surprise Box\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
@@ -501,15 +594,20 @@
     }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    /* REAL CANVAS WHEEL LOGIC */
+    /* REAL CANVAS WHEEL LOGIC WITH WHITE & YELLOW PORTIONS & BOLD RED TEXT */
     const canvas = document.getElementById("wheelCanvas");
     const ctx = canvas.getContext("2d");
 
+    // Repeat items to fill 8 slices with White & Yellow alternated backgrounds
     const wheelItems = [
-      { label: "Kulhad Chai", color: "#e67e22" },
-      { label: "Ice Cream", color: "#2980b9" },
-      { label: "Veg Salad", color: "#27ae60" },
-      { label: "Better Luck Next Time", color: "#c0392b" }
+      { label: "Kulhad Chai", bg: "#FFFFFF" },
+      { label: "Ice Cream", bg: "#FFEB3B" },
+      { label: "Veg Salad", bg: "#FFFFFF" },
+      { label: "Better Luck Next Time", bg: "#FFEB3B" },
+      { label: "Kulhad Chai", bg: "#FFFFFF" },
+      { label: "Ice Cream", bg: "#FFEB3B" },
+      { label: "Veg Salad", bg: "#FFFFFF" },
+      { label: "Better Luck Next Time", bg: "#FFEB3B" }
     ];
 
     const numSegments = wheelItems.length;
@@ -523,19 +621,25 @@
       for (let i = 0; i < numSegments; i++) {
         const angle = i * arcSize;
         ctx.beginPath();
-        ctx.fillStyle = wheelItems[i].color;
+        ctx.fillStyle = wheelItems[i].bg;
         ctx.moveTo(radius, radius);
         ctx.arc(radius, radius, radius, angle, angle + arcSize);
         ctx.lineTo(radius, radius);
         ctx.fill();
 
+        // Draw segment borders
+        ctx.strokeStyle = "#d4af37";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Draw Text - Bold Red Color for perfect contrast
         ctx.save();
         ctx.translate(radius, radius);
         ctx.rotate(angle + arcSize / 2);
         ctx.textAlign = "right";
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = "#D32F2F"; // Bold Red Text
         ctx.font = "bold 13px Arial";
-        ctx.fillText(wheelItems[i].label, radius - 15, 4);
+        ctx.fillText(wheelItems[i].label, radius - 12, 5);
         ctx.restore();
       }
     }
@@ -567,6 +671,7 @@
       }, 4000);
     }
 
+    checkUserStatus();
     renderMenu(menuItems);
   </script>
 </body>
