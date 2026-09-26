@@ -275,33 +275,22 @@
     <div id="menu-container"></div>
   </div>
 
-  <!-- Modal 1: Phone & OTP -->
+  <!-- Modal 1: Simple Direct Mobile Login -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-card">
       <span class="close-btn" onclick="closeModal('authModal')">&times;</span>
-      <div id="step-phone">
+      <div>
         <div class="modal-title">Customer Login</div>
         <div class="form-group">
           <label>Mobile Number</label>
           <input type="tel" id="userPhone" class="form-control" placeholder="10-digit mobile number" maxlength="10">
         </div>
-        <!-- Recaptcha Container -->
-        <div id="recaptcha-container"></div>
-        <button class="submit-btn" id="sendOtpBtn" onclick="sendOTP()">Send OTP</button>
-      </div>
-      <div id="step-otp" style="display: none;">
-        <div class="modal-title">Verify OTP</div>
-        <p style="font-size:12px; color:#aaa; text-align:center; margin-bottom:10px;">Enter the 6-digit OTP sent to your phone</p>
-        <div class="form-group">
-          <label>Enter 6-digit OTP</label>
-          <input type="text" id="otpInput" class="form-control" placeholder="123456" maxlength="6">
-        </div>
-        <button class="submit-btn" onclick="verifyOTP()">Verify & Continue</button>
+        <button class="submit-btn" onclick="loginWithMobile()">Login / Continue</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal 2: Customer Profile & Loyalty -->
+  <!-- Modal 2: Customer Profile & Loyalty (Form as it is) -->
   <div class="modal-overlay" id="profileModal">
     <div class="modal-card">
       <span class="close-btn" onclick="closeModal('profileModal')">&times;</span>
@@ -355,77 +344,7 @@
     </div>
   </div>
 
-  <!-- Firebase Scripts Integration -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-    // Your Firebase Configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyD8H2QNMLsu-FrFhFRwf5MXz6KsoRRmXL0",
-      authDomain: "menu-74bc7.firebaseapp.com",
-      projectId: "menu-74bc7",
-      storageBucket: "menu-74bc7.firebasestorage.app",
-      messagingSenderId: "419235969075",
-      appId: "1:419235969075:web:c4e11d75a7aabbe3b98b46",
-      measurementId: "G-QEG8YDF6TN"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    // Initialize Recaptcha
-    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      'size': 'invisible'
-    });
-
-    // Real Firebase OTP Sender Function
-    window.sendFirebaseOTP = function(phone) {
-      const fullPhoneNumber = "+91" + phone; // Adding India Country Code (+91)
-      const appVerifier = window.recaptchaVerifier;
-
-      signInWithPhoneNumber(auth, fullPhoneNumber, appVerifier)
-        .then((confirmationResult) => {
-          window.confirmationResult = confirmationResult;
-          document.getElementById('step-phone').style.display = 'none';
-          document.getElementById('step-otp').style.display = 'block';
-          alert("OTP has been sent to " + fullPhoneNumber);
-        }).catch((error) => {
-          console.error("SMS Error:", error);
-          alert("Failed to send OTP: " + error.message);
-        });
-    };
-
-    // Verify OTP Code
-    window.verifyFirebaseOTP = function(otp) {
-      if (!window.confirmationResult) {
-        alert("Please request OTP first.");
-        return;
-      }
-      window.confirmationResult.confirm(otp).then((result) => {
-        const phone = document.getElementById('userPhone').value;
-        currentUser = JSON.parse(localStorage.getItem('user_' + phone)) || {
-          phone: phone,
-          name: '',
-          dob: '',
-          marital: 'Single',
-          anniversary: '',
-          spouseDob: '',
-          points: 0,
-          visits: 0
-        };
-
-        closeModal('authModal');
-        document.getElementById('userBtn').innerText = currentUser.name ? currentUser.name : 'My Profile';
-        openProfileModal();
-      }).catch((error) => {
-        alert("Invalid OTP code. Please try again.");
-      });
-    };
-  </script>
-
   <script>
-    // Updated Menu Items with your provided Gulab Jamun photo
     const menuItems = [
       {
         name: "Butter Chicken",
@@ -534,21 +453,26 @@
       document.getElementById(id).style.display = 'none';
     }
 
-    function sendOTP() {
-      const phone = document.getElementById('userPhone').value;
-      if (phone.length === 10) {
-        window.sendFirebaseOTP(phone);
+    // Direct Mobile Login function (No OTP required)
+    function loginWithMobile() {
+      const phone = document.getElementById('userPhone').value.trim();
+      if (phone.length === 10 && !isNaN(phone)) {
+        currentUser = JSON.parse(localStorage.getItem('user_' + phone)) || {
+          phone: phone,
+          name: '',
+          dob: '',
+          marital: 'Single',
+          anniversary: '',
+          spouseDob: '',
+          points: 0,
+          visits: 0
+        };
+
+        closeModal('authModal');
+        document.getElementById('userBtn').innerText = currentUser.name ? currentUser.name : 'My Profile';
+        openProfileModal();
       } else {
         alert('Please enter a valid 10-digit mobile number.');
-      }
-    }
-
-    function verifyOTP() {
-      const otp = document.getElementById('otpInput').value;
-      if (otp.length === 6) {
-        window.verifyFirebaseOTP(otp);
-      } else {
-        alert('Please enter a valid 6-digit OTP code.');
       }
     }
 
