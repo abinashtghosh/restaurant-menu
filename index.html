@@ -240,6 +240,9 @@
             <option value="Classic Vada Pav">Classic Vada Pav (Veg)</option>
             <option value="Cheese Blast Vada Pav">Cheese Blast Vada Pav (+₹20)</option>
             <option value="Peri Peri Fries">Peri Peri Fries</option>
+            <option value="Cheese Balls">Cheese Balls (5 Pcs)</option>
+            <option value="Veg Wrap">Veg Wrap</option>
+            <option value="Veg Sandwich">Veg Sandwich</option>
           </select>
         </div>
         <div class="combo-select-group">
@@ -247,6 +250,7 @@
           <select id="comboBeverage">
             <option value="Fresh Lime Soda">Fresh Lime Soda</option>
             <option value="Masala Kulhad Chai">Masala Kulhad Chai</option>
+            <option value="Chilled Cold Drink">Chilled Cold Drink</option>
             <option value="Chilled Cold Coffee">Chilled Cold Coffee (+₹15)</option>
           </select>
         </div>
@@ -349,15 +353,70 @@
       },
       {
         id: 4,
-        name: "Butter Chicken",
-        category: "Non-Veg",
-        price: 369,
-        description: "Rich creamy tomato gravy with tender charcoal-grilled chicken pieces.",
-        imageUrl: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&q=80",
-        veg: false
+        name: "Peri Peri Fries",
+        category: "Snacks",
+        price: 90,
+        description: "Crispy french fries tossed in spicy and tangy peri peri seasoning.",
+        imageUrl: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600&q=80",
+        veg: true
       },
       {
         id: 5,
+        name: "Cheese Balls (5 Pcs)",
+        category: "Snacks",
+        price: 99,
+        description: "Crispy fried golden balls filled with gooey melted cheese and herbs.",
+        imageUrl: "https://images.unsplash.com/photo-1541529086526-db283c563270?w=600&q=80",
+        veg: true
+      },
+      {
+        id: 6,
+        name: "Veg Wrap (1 Pc)",
+        category: "Snacks",
+        price: 55,
+        description: "Soft tortilla wrap stuffed with fresh veggies, tangy sauces, and crisp patty.",
+        imageUrl: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600&q=80",
+        veg: true
+      },
+      {
+        id: 7,
+        name: "Veg Sandwich (1 Pc)",
+        category: "Snacks",
+        price: 55,
+        description: "Freshly layered vegetable sandwich with green chutney and mild spices.",
+        imageUrl: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&q=80",
+        veg: true
+      },
+      {
+        id: 8,
+        name: "Chana Chilli (Veg)",
+        category: "Veg Specials",
+        price: 80,
+        description: "Crispy fried chickpeas tossed in spicy Indo-Chinese chilli garlic sauce.",
+        imageUrl: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80",
+        veg: true,
+        hasPortions: true
+      },
+      {
+        id: 9,
+        name: "Plain Dosa",
+        category: "Veg Specials",
+        price: 70,
+        description: "Thin and crispy South-Indian rice crepe served with coconut chutney & sambar.",
+        imageUrl: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=600&q=80",
+        veg: true
+      },
+      {
+        id: 10,
+        name: "Masala Dosa",
+        category: "Veg Specials",
+        price: 140,
+        description: "Crispy rice crepe stuffed with spiced potato mash, served with chutney & sambar.",
+        imageUrl: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&q=80",
+        veg: true
+      },
+      {
+        id: 11,
         name: "Paneer Tikka",
         category: "Veg Specials",
         price: 260,
@@ -366,7 +425,25 @@
         veg: true
       },
       {
-        id: 6,
+        id: 12,
+        name: "Butter Chicken",
+        category: "Non-Veg",
+        price: 369,
+        description: "Rich creamy tomato gravy with tender charcoal-grilled chicken pieces.",
+        imageUrl: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&q=80",
+        veg: false
+      },
+      {
+        id: 13,
+        name: "Vanilla Ice Cream (2 Scoops)",
+        category: "Desserts",
+        price: 60,
+        description: "Classic rich and creamy vanilla bean flavored ice cream.",
+        imageUrl: "https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=600&q=80",
+        veg: true
+      },
+      {
+        id: 14,
         name: "Gulab Jamun (2 Pcs)",
         category: "Desserts",
         price: 90,
@@ -375,7 +452,25 @@
         veg: true
       },
       {
-        id: 7,
+        id: 15,
+        name: "Masala Kulhad Chai",
+        category: "Drinks & Tea",
+        price: 30,
+        description: "Authentic Indian milk tea brewed with aromatic spices, served in earthy kulhad.",
+        imageUrl: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&q=80",
+        veg: true
+      },
+      {
+        id: 16,
+        name: "Chilled Cold Drink",
+        category: "Drinks & Tea",
+        price: 40,
+        description: "Refreshing cold carbonated beverage (300ml bottle/can).",
+        imageUrl: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=600&q=80",
+        veg: true
+      },
+      {
+        id: 17,
         name: "Fresh Lime Soda",
         category: "Drinks & Tea",
         price: 80,
@@ -412,6 +507,7 @@
                 <div>
                   <div class="item-name">${item.name}</div>
                   <div class="item-desc">${item.description}</div>
+                  
                   ${item.customizable ? `
                     <div class="custom-options">
                       <select id="spice_${item.id}">
@@ -421,11 +517,20 @@
                       </select>
                     </div>
                   ` : ''}
+
+                  ${item.hasPortions ? `
+                    <div class="custom-options">
+                      <select id="portion_${item.id}" onchange="updatePortionPrice(${item.id})">
+                        <option value="Half Plate (₹80)">Half Plate - ₹80</option>
+                        <option value="Full Plate (₹160)">Full Plate - ₹160</option>
+                      </select>
+                    </div>
+                  ` : ''}
                 </div>
                 <div class="card-footer">
                   <div>
                     ${item.originalPrice ? `<span class="old-price">₹${item.originalPrice}</span>` : ''}
-                    <span class="price">₹${item.price}</span>
+                    <span class="price" id="price_display_${item.id}">₹${item.price}</span>
                   </div>
                   <button class="order-btn" onclick="directOrder('${item.name}', ${item.price}, ${item.id})">
                     Order WhatsApp
@@ -438,6 +543,16 @@
         html += `</div>`;
       }
       container.innerHTML = html;
+    }
+
+    function updatePortionPrice(itemId) {
+      const portion = document.getElementById(`portion_${itemId}`).value;
+      const priceDisplay = document.getElementById(`price_display_${itemId}`);
+      if (portion.includes('160')) {
+        priceDisplay.innerText = '₹160';
+      } else {
+        priceDisplay.innerText = '₹80';
+      }
     }
 
     function filterMenu(category, btn) {
@@ -462,13 +577,21 @@
     }
 
     function directOrder(itemName, price, itemId) {
-      let spiceText = '';
+      let customText = '';
+      
       const spiceElem = document.getElementById(`spice_${itemId}`);
       if (spiceElem) {
-        spiceText = ` (Preference: ${spiceElem.value})`;
+        customText += ` (Preference: ${spiceElem.value})`;
       }
 
-      const message = `Hello! I would like to order:\n- *${itemName}*${spiceText} @ ₹${price}`;
+      const portionElem = document.getElementById(`portion_${itemId}`);
+      if (portionElem) {
+        customText += ` (${portionElem.value})`;
+      }
+
+      const currentPriceText = document.getElementById(`price_display_${itemId}`) ? document.getElementById(`price_display_${itemId}`).innerText : `₹${price}`;
+
+      const message = `Hello! I would like to order:\n- *${itemName}*${customText} @ ${currentPriceText}`;
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
