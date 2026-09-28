@@ -298,6 +298,7 @@
         <div class="combo-select-group">
           <label>Step 2: Choose Beverage</label>
           <select id="comboBeverage">
+            <option value="Masala Cold Drink">Masala Cold Drink</option>
             <option value="Fresh Lime Soda">Fresh Lime Soda</option>
             <option value="Masala Kulhad Chai">Masala Kulhad Chai</option>
             <option value="Chilled Cold Drink">Chilled Cold Drink</option>
@@ -316,7 +317,7 @@
       <button class="cat-btn" onclick="filterMenu('snacks', this)">Snacks & Vada Pav</button>
       <button class="cat-btn" onclick="filterMenu('veg', this)">Veg Specials</button>
       <button class="cat-btn" onclick="filterMenu('non-veg', this)">Non-Veg</button>
-      <button class="cat-btn" onclick="filterMenu('dessert', this)">Desserts & Tea</button>
+      <button class="cat-btn" onclick="filterMenu('dessert', this)">Beverages & Tea</button>
     </div>
 
     <div id="menu-container"></div>
@@ -414,6 +415,24 @@
       },
       {
         id: 6,
+        name: "Masala Cold Drink (1 Glass)",
+        category: "Beverages & Tea",
+        price: 30,
+        description: "Chilled fizz infused with special chatpata Indian spices and fresh mint.",
+        imageUrl: "masala cold drink.jpg",
+        veg: true
+      },
+      {
+        id: 7,
+        name: "Masala Kulhad Chai",
+        category: "Beverages & Tea",
+        price: 30,
+        description: "Authentic Indian milk tea brewed with aromatic spices, served in earthy kulhad.",
+        imageUrl: "kulhad chai.jpg",
+        veg: true
+      },
+      {
+        id: 8,
         name: "Gulab Jamun (2 Pcs)",
         category: "Desserts & Tea",
         price: 90,
@@ -421,45 +440,36 @@
         imageUrl: "gulab jamun.avif",
         veg: true
       },
-      {
-        id: 7,
-        name: "Masala Kulhad Chai",
-        category: "Desserts & Tea",
-        price: 30,
-        description: "Authentic Indian milk tea brewed with aromatic spices, served in earthy kulhad.",
-        imageUrl: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&q=80",
-        veg: true
-      },
       /* --- Non-Veg Menu Section --- */
       {
-        id: 8,
+        id: 9,
         name: "Egg Chop (2 Pcs)",
         category: "Non-Veg",
         price: 49,
         description: "Deep fried spiced egg croquettes with crispy outer coating.",
-        imageUrl: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=500&q=80",
-        veg: false
-      },
-      {
-        id: 9,
-        name: "Chilli Chicken (Half Plate - 5 Pcs)",
-        category: "Non-Veg",
-        price: 90,
-        description: "Tender chicken pieces tossed in Indo-Chinese chili sauce & peppers.",
-        imageUrl: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80",
+        imageUrl: "egg chop.jpg",
         veg: false
       },
       {
         id: 10,
-        name: "Chilli Chicken (Full Plate - 10 Pcs)",
+        name: "Chilli Chicken (Half Plate - 5 Pcs)",
         category: "Non-Veg",
-        price: 160,
-        description: "Generous serving of juicy chicken tossed in spicy garlic soy chili sauce.",
-        imageUrl: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80",
+        price: 90,
+        description: "Tender chicken pieces tossed in Indo-Chinese chili sauce & peppers.",
+        imageUrl: "chiili chicken.jpg",
         veg: false
       },
       {
         id: 11,
+        name: "Chilli Chicken (Full Plate - 10 Pcs)",
+        category: "Non-Veg",
+        price: 160,
+        description: "Generous serving of juicy chicken tossed in spicy garlic soy chili sauce.",
+        imageUrl: "chiili chicken.jpg",
+        veg: false
+      },
+      {
+        id: 12,
         name: "Chicken Wrap (1 Pc)",
         category: "Non-Veg",
         price: 110,
@@ -539,7 +549,7 @@
           if (category === 'snacks') return cat.includes('snack');
           if (category === 'veg') return i.veg && !cat.includes('snack') && !cat.includes('diy');
           if (category === 'non-veg') return !i.veg;
-          if (category === 'dessert') return cat.includes('dessert');
+          if (category === 'dessert') return cat.includes('beverages') || cat.includes('dessert');
           return true;
         });
         renderMenu(filtered);
@@ -654,7 +664,6 @@
         ctx.fillStyle = "#fff";
         ctx.font = "bold 12px Arial";
 
-        // Multi-line rendering for 'Better Luck Next Time'
         const textRadius = radius * 0.65;
         if (wheelItems[i].lines.length > 1) {
           ctx.fillText(wheelItems[i].lines[0], textRadius, -7);
@@ -667,7 +676,6 @@
       }
     }
 
-    // Check Multiple Spin Status (Strict Single-Spin Lock)
     function checkSpinStatus() {
       const hasSpun = localStorage.getItem('hasUserSpun');
       const savedResult = localStorage.getItem('spinResultMsg');
@@ -712,7 +720,6 @@
 
         resultDiv.innerText = winText;
 
-        // Save state permanently to block future spins
         localStorage.setItem('hasUserSpun', 'true');
         localStorage.setItem('spinResultMsg', winText);
         spinBtn.style.display = 'none';
