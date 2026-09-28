@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Royal Heritage - Smart Menu & Interactive Wheel</title>
+  <title>Mother's Cloud Kitchen - Smart Menu & Interactive Wheel</title>
   <style>
     :root {
       --primary-gold: #d4af37;
@@ -31,7 +31,7 @@
     header {
       background: rgba(0, 0, 0, 0.9);
       border-bottom: 2px solid var(--primary-gold);
-      padding: 15px 20px;
+      padding: 12px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -40,7 +40,19 @@
       z-index: 100;
       backdrop-filter: blur(10px);
     }
-    .brand h1 { font-size: 22px; color: var(--primary-gold); font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+    .brand-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: 1.5px solid var(--primary-gold);
+      object-fit: cover;
+    }
+    .brand h1 { font-size: 20px; color: var(--primary-gold); font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
     .brand p { font-size: 11px; color: var(--text-muted); font-style: italic; }
 
     .header-actions { display: flex; gap: 8px; align-items: center; }
@@ -257,9 +269,12 @@
 <body>
 
   <header>
-    <div class="brand">
-      <h1>Royal Heritage</h1>
-      <p>Gourmet Snacks & Smart WhatsApp Dining</p>
+    <div class="brand-header">
+      <img src="watermarked_img_2318637083018131662.png" alt="Mother's Cloud Kitchen Logo" class="brand-logo">
+      <div class="brand">
+        <h1>Mother's Cloud Kitchen</h1>
+        <p>Homely Food & Smart WhatsApp Dining</p>
+      </div>
     </div>
     <div class="header-actions">
       <button class="btn-outline" id="loginHeaderBtn" onclick="openLoginModal()">🔑 Login</button>
@@ -599,7 +614,7 @@
       const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
       let userText = user.name ? `\n- Customer: ${user.name} (${user.phone})` : '';
 
-      const message = `*NEW ORDER - ROYAL HERITAGE*${userText}\n\n- *Item:* ${itemName}${customText}\n- *Amount:* ₹${price}${couponText}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      const message = `*NEW ORDER - MOTHER'S CLOUD KITCHEN*${userText}\n\n- *Item:* ${itemName}${customText}\n- *Amount:* ₹${price}${couponText}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
       
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
@@ -610,7 +625,7 @@
       const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
       let userText = user.name ? `\n- Customer: ${user.name} (${user.phone})` : '';
 
-      const message = `*NEW COMBO ORDER (₹119)*${userText}\n\n- *Snack:* ${snack}\n- *Beverage:* ${beverage}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      const message = `*NEW COMBO ORDER (₹119) - MOTHER'S CLOUD KITCHEN*${userText}\n\n- *Snack:* ${snack}\n- *Beverage:* ${beverage}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
@@ -618,7 +633,7 @@
       const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
       let userText = user.name ? `\n- Customer: ${user.name} (${user.phone})` : '';
 
-      const message = `*MYSTERY SURPRISE BOX ORDER (₹129)*${userText}\n\n- *Selection:* Chef's Special Surprise Box\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      const message = `*MYSTERY SURPRISE BOX ORDER (₹129) - MOTHER'S CLOUD KITCHEN*${userText}\n\n- *Selection:* Chef's Special Surprise Box\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
@@ -720,7 +735,7 @@
 
         resultDiv.innerText = winText;
 
-        localStorage.setItem('hasUserSpun', 'true');
+        localStorage.getItem('hasUserSpun') || localStorage.setItem('hasUserSpun', 'true');
         localStorage.setItem('spinResultMsg', winText);
         spinBtn.style.display = 'none';
       }, 4000);
