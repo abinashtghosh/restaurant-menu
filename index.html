@@ -3,366 +3,204 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Food Menu & Lucky Spin Wheel</title>
+  <title>Real Lucky Spin & Win</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: Arial, sans-serif;
     }
-
     body {
-      background-color: #0d0d0d;
-      color: #ffffff;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    h1.page-title {
-      color: #ffd700;
-      margin-bottom: 20px;
-      font-size: 28px;
-      text-align: center;
-    }
-
-    /* Menu Section Layout */
-    .menu-container {
-      width: 100%;
-      max-width: 800px;
-      margin-bottom: 40px;
-    }
-
-    .section-title {
-      color: #ff4d4d;
-      font-size: 22px;
-      border-bottom: 2px solid #ff4d4d;
-      padding-bottom: 6px;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-    }
-
-    .menu-card {
-      background: #1a1815;
-      border: 1px solid #333;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      transition: transform 0.2s ease;
-    }
-
-    .menu-card:hover {
-      transform: translateY(-4px);
-      border-color: #ffd700;
-    }
-
-    .menu-card img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-    }
-
-    .menu-card-details {
-      padding: 14px;
-    }
-
-    .menu-item-name {
-      font-size: 18px;
-      font-weight: bold;
-      color: #ffffff;
-      margin-bottom: 4px;
-    }
-
-    .menu-item-portion {
-      font-size: 13px;
-      color: #aaa;
-      margin-bottom: 8px;
-    }
-
-    .menu-item-price {
-      font-size: 16px;
-      font-weight: bold;
-      color: #ffd700;
-    }
-
-    /* Spin Modal Layout */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.85);
+      background-color: #121212;
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 100;
+      min-height: 100vh;
     }
-
     .modal-container {
-      background-color: #161513;
-      border: 1.5px solid #d4af37;
-      border-radius: 20px;
-      padding: 24px 16px;
-      width: 92%;
-      max-width: 420px;
+      background-color: #1c1a17;
+      border: 1px solid #d4af37;
+      border-radius: 16px;
+      padding: 24px;
+      width: 90%;
+      max-width: 440px;
       text-align: center;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.8);
       position: relative;
+      color: #fff;
     }
-
     .close-btn {
       position: absolute;
-      top: 14px;
-      right: 18px;
+      top: 16px;
+      right: 16px;
       background: none;
       border: none;
-      color: #888888;
-      font-size: 24px;
+      color: #aaa;
+      font-size: 20px;
       cursor: pointer;
-      line-height: 1;
     }
-
-    .close-btn:hover { color: #ffffff; }
-
     .header-title {
       font-size: 20px;
-      font-weight: 700;
+      font-weight: bold;
       color: #ffd700;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
     }
-
     .header-subtitle {
-      font-size: 12px;
-      color: #cccccc;
-      margin-bottom: 18px;
+      font-size: 13px;
+      color: #ccc;
+      margin-bottom: 20px;
     }
-
-    /* Canvas & Wheel */
     .wheel-container {
       position: relative;
-      width: 310px;
-      height: 310px;
+      width: 320px;
+      height: 320px;
       margin: 0 auto 20px auto;
     }
-
     #wheelCanvas {
-      width: 310px;
-      height: 310px;
+      width: 320px;
+      height: 320px;
       border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
     }
-
     .pointer {
       position: absolute;
-      top: -12px;
+      top: -10px;
       left: 50%;
       transform: translateX(-50%);
       width: 0;
       height: 0;
       border-left: 14px solid transparent;
       border-right: 14px solid transparent;
-      border-top: 26px solid #ff4d4d;
+      border-top: 24px solid #ff4d4d;
       z-index: 10;
-      filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.6));
     }
-
     .spin-btn {
       background: linear-gradient(180deg, #ff7a29 0%, #e64a19 100%);
-      color: #ffffff;
+      color: #fff;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: bold;
       border: none;
-      padding: 12px 40px;
+      padding: 12px 36px;
       border-radius: 25px;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(230, 74, 25, 0.4);
-      transition: transform 0.2s ease;
+      box-shadow: 0 4px 12px rgba(230, 74, 25, 0.4);
+      transition: all 0.3s ease;
     }
-
-    .spin-btn:hover { transform: scale(1.04); }
-
+    .spin-btn:hover {
+      transform: scale(1.05);
+    }
     .spin-btn:disabled {
-      background: #444444;
+      background: #555;
       cursor: not-allowed;
       box-shadow: none;
       transform: none;
     }
-
     .result-msg {
       margin-top: 16px;
       font-size: 14px;
       color: #ffd700;
-      min-height: 24px;
+      min-height: 20px;
       font-weight: 600;
-      line-height: 1.4;
-      padding: 0 10px;
     }
   </style>
 </head>
 <body>
 
-  <h1 class="page-title">🍽️ Food Menu</h1>
+  <div class="modal-container">
+    <button class="close-btn">&times;</button>
+    <div class="header-title">🎡 Real Lucky Spin & Win</div>
+    <div class="header-subtitle">Spin the wheel to win instant free items or offers!</div>
 
-  <!-- Non-Veg Menu Section -->
-  <div class="menu-container">
-    <h2 class="section-title">🍗 Non-Veg Special</h2>
-    <div class="menu-grid">
-      
-      <!-- Egg Chop -->
-      <div class="menu-card">
-        <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=500&q=80" alt="Egg Chop">
-        <div class="menu-card-details">
-          <div class="menu-item-name">Egg Chop</div>
-          <div class="menu-item-portion">2 Pieces</div>
-          <div class="menu-item-price">₹49</div>
-        </div>
-      </div>
-
-      <!-- Chilli Chicken Half -->
-      <div class="menu-card">
-        <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80" alt="Chilli Chicken Half">
-        <div class="menu-card-details">
-          <div class="menu-item-name">Chilli Chicken (Half Plate)</div>
-          <div class="menu-item-portion">5 Pieces</div>
-          <div class="menu-item-price">₹90</div>
-        </div>
-      </div>
-
-      <!-- Chilli Chicken Full -->
-      <div class="menu-card">
-        <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80" alt="Chilli Chicken Full">
-        <div class="menu-card-details">
-          <div class="menu-item-name">Chilli Chicken (Full Plate)</div>
-          <div class="menu-item-portion">10 Pieces</div>
-          <div class="menu-item-price">₹160</div>
-        </div>
-      </div>
-
-      <!-- Chicken Wrap -->
-      <div class="menu-card">
-        <img src="https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=500&q=80" alt="Chicken Wrap">
-        <div class="menu-card-details">
-          <div class="menu-item-name">Chicken Wrap</div>
-          <div class="menu-item-portion">1 Piece</div>
-          <div class="menu-item-price">₹110</div>
-        </div>
-      </div>
-
+    <div class="wheel-container">
+      <div class="pointer"></div>
+      <canvas id="wheelCanvas" width="600" height="600"></canvas>
     </div>
-  </div>
 
-  <!-- Spin Wheel Modal -->
-  <div class="modal-overlay" id="spinModal">
-    <div class="modal-container">
-      <button class="close-btn" id="closeBtn">&times;</button>
-      <div class="header-title">🎡 Real Lucky Spin & Win</div>
-      <div class="header-subtitle">Spin the wheel to win instant free items or offers!</div>
-
-      <div class="wheel-container">
-        <div class="pointer"></div>
-        <canvas id="wheelCanvas" width="600" height="600"></canvas>
-      </div>
-
-      <button id="spinBtn" class="spin-btn">SPIN NOW</button>
-      <div id="resultMsg" class="result-msg"></div>
-    </div>
+    <button id="spinBtn" class="spin-btn">SPIN NOW</button>
+    <div id="resultMsg" class="result-msg"></div>
   </div>
 
   <script>
-    // Embedded SVG Data URIs for Icons
-    const iconData = {
-      chai: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="%23d32f2f" d="M16 22h32l-4 34H20z"/><path fill="%23ffa726" d="M12 16h40v6H12z"/></svg>',
-      icecream: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="%23ff80ab" d="M32 6a16 16 0 0 0-16 16c0 4 2 8 6 10h20c4-2 6-6 6-10A16 16 0 0 0 32 6z"/><path fill="%23ffb74d" d="M20 32l12 28 12-28z"/></svg>',
-      salad: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="%2366bb6a" d="M10 28a22 22 0 0 0 44 0H10z"/><circle cx="22" cy="20" r="6" fill="%23e53935"/><circle cx="42" cy="22" r="5" fill="%23fbc02d"/></svg>',
-      emoji: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="%23fbc02d"/><circle cx="22" cy="26" r="4" fill="%23424242"/><circle cx="42" cy="26" r="4" fill="%23424242"/><path fill="none" stroke="%23424242" stroke-width="3.5" stroke-linecap="round" d="M20 46c7-7 17-7 24 0"/></svg>'
-    };
-
-    // Wheel Slice Data Configuration
+    // Configuration Options
     const items = [
-      { label: "Kulhad Chai", lines: ["Kulhad Chai"], color: "#ffffff", textColor: "#d32f2f", iconKey: "chai" },
-      { label: "Ice Cream", lines: ["Ice Cream"], color: "#ffeb3b", textColor: "#d32f2f", iconKey: "icecream" },
-      { label: "Veg Salad", lines: ["Veg Salad"], color: "#ffffff", textColor: "#d32f2f", iconKey: "salad" },
-      { label: "Better Luck Next Time", lines: ["Better Luck", "Next Time"], color: "#ffeb3b", textColor: "#d32f2f", iconKey: "emoji" },
-      { label: "Kulhad Chai", lines: ["Kulhad Chai"], color: "#ffffff", textColor: "#d32f2f", iconKey: "chai" },
-      { label: "Ice Cream", lines: ["Ice Cream"], color: "#ffeb3b", textColor: "#d32f2f", iconKey: "icecream" },
-      { label: "Veg Salad", lines: ["Veg Salad"], color: "#ffffff", textColor: "#d32f2f", iconKey: "salad" },
-      { label: "Better Luck Next Time", lines: ["Better Luck", "Next Time"], color: "#ffeb3b", textColor: "#d32f2f", iconKey: "emoji" }
+      { label: "Kulhad Chai", lines: ["Kulhad Chai"], color: "#ffffff", textColor: "#d32f2f", iconSrc: "kulhad.png" },
+      { label: "Ice Cream", lines: ["Ice Cream"], color: "#ffeb3b", textColor: "#d32f2f", iconSrc: "icecream.png" },
+      { label: "Veg Salad", lines: ["Veg Salad"], color: "#ffffff", textColor: "#d32f2f", iconSrc: "salad.png" },
+      { label: "Better Luck Next Time", lines: ["Better Luck", "Next Time"], color: "#ffeb3b", textColor: "#d32f2f", iconSrc: "emoji.png" },
+      { label: "Kulhad Chai", lines: ["Kulhad Chai"], color: "#ffffff", textColor: "#d32f2f", iconSrc: "kulhad.png" },
+      { label: "Ice Cream", lines: ["Ice Cream"], color: "#ffeb3b", textColor: "#d32f2f", iconSrc: "icecream.png" },
+      { label: "Veg Salad", lines: ["Veg Salad"], color: "#ffffff", textColor: "#d32f2f", iconSrc: "salad.png" },
+      { label: "Better Luck Next Time", lines: ["Better Luck", "Next Time"], color: "#ffeb3b", textColor: "#d32f2f", iconSrc: "emoji.png" }
     ];
 
     const canvas = document.getElementById('wheelCanvas');
     const ctx = canvas.getContext('2d');
     const spinBtn = document.getElementById('spinBtn');
     const resultMsg = document.getElementById('resultMsg');
-    const closeBtn = document.getElementById('closeBtn');
-    const spinModal = document.getElementById('spinModal');
 
     const numSlices = items.length;
     const arc = (2 * Math.PI) / numSlices;
     let startAngle = 0;
     let isSpinning = false;
 
-    // Load Icons
+    // Load PNG Icons
     const loadedImages = {};
-    Object.keys(iconData).forEach(key => {
-      const img = new Image();
-      img.src = iconData[key];
-      img.onload = () => drawWheel();
-      loadedImages[key] = img;
+    let imagesLoadedCount = 0;
+
+    items.forEach((item, index) => {
+      if (item.iconSrc && !loadedImages[item.iconSrc]) {
+        const img = new Image();
+        img.src = item.iconSrc;
+        img.onload = () => {
+          imagesLoadedCount++;
+          drawWheel();
+        };
+        loadedImages[item.iconSrc] = img;
+      }
     });
 
-    // Draw Wheel on Canvas
+    // Draw Wheel Function
     function drawWheel() {
       const radius = canvas.width / 2;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (let i = 0; i < numSlices; i++) {
         const angle = startAngle + i * arc;
-
-        // Slice sector
+        
+        // Draw Slice
         ctx.beginPath();
         ctx.fillStyle = items[i].color;
         ctx.moveTo(radius, radius);
-        ctx.arc(radius, radius, radius - 12, angle, angle + arc, false);
+        ctx.arc(radius, radius, radius - 10, angle, angle + arc, false);
         ctx.lineTo(radius, radius);
         ctx.fill();
-
-        // Slice Border
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 4;
         ctx.strokeStyle = "#ffd700";
         ctx.stroke();
 
-        // Render Icon & Multi-line Text
+        // Draw Content (Image & Text)
         ctx.save();
         ctx.translate(radius, radius);
         ctx.rotate(angle + arc / 2);
 
-        // Draw Icon
-        const img = loadedImages[items[i].iconKey];
+        // Position Icon
+        const img = loadedImages[items[i].iconSrc];
         if (img && img.complete) {
-          ctx.drawImage(img, radius * 0.62, -22, 44, 44);
+          ctx.drawImage(img, radius * 0.55, -20, 40, 40);
         }
 
-        // Draw Text (2-Line Support for "Better Luck Next Time")
+        // Position & Format Text
         ctx.fillStyle = items[i].textColor;
-        ctx.font = "bold 20px Arial";
+        ctx.font = "bold 22px Arial";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
-        const textRadius = radius * 0.33;
+        const textRadius = radius * 0.35;
         if (items[i].lines.length > 1) {
           ctx.fillText(items[i].lines[0], textRadius, -12);
           ctx.fillText(items[i].lines[1], textRadius, 14);
@@ -373,40 +211,46 @@
         ctx.restore();
       }
 
-      // Outer Rim
+      // Draw Outer Golden Border
       ctx.beginPath();
-      ctx.arc(radius, radius, radius - 6, 0, 2 * Math.PI);
-      ctx.lineWidth = 12;
+      ctx.arc(radius, radius, radius - 5, 0, 2 * Math.PI);
+      ctx.lineWidth = 10;
       ctx.strokeStyle = "#ffd700";
       ctx.stroke();
     }
 
-    // Single-Spin Guard Logic
+    // Check Multiple Spin Status
     function checkSpinStatus() {
-      if (localStorage.getItem('hasUserSpun')) {
+      const hasSpun = localStorage.getItem('hasUserSpun');
+      const savedResult = localStorage.getItem('spinResultMsg');
+      
+      if (hasSpun) {
+        spinBtn.disabled = true;
         spinBtn.style.display = 'none';
-        resultMsg.innerText = localStorage.getItem('spinResultMsg') || "Aapne apna spin pehle hi use kar liya hai!";
+        resultMsg.innerText = savedResult || "Aapne apna spin pehle hi use kar liya hai!";
       }
     }
 
-    // Execute Spin Animation
+    // Spin Action Function
     function spin() {
       if (isSpinning || localStorage.getItem('hasUserSpun')) return;
 
       isSpinning = true;
       spinBtn.disabled = true;
 
-      const spinRounds = 6 + Math.floor(Math.random() * 4);
+      const spinRounds = 5 + Math.floor(Math.random() * 5);
       const randomSlice = Math.floor(Math.random() * numSlices);
       const targetAngle = (2 * Math.PI * spinRounds) + ((numSlices - randomSlice - 0.5) * arc);
-
-      const duration = 4500;
+      
+      let currentRotation = 0;
+      const duration = 4000;
       const startTime = performance.now();
 
       function animate(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-
+        
+        // Ease-out cubic animation
         const easeOut = 1 - Math.pow(1 - progress, 3);
         startAngle = easeOut * targetAngle;
 
@@ -417,14 +261,17 @@
         } else {
           isSpinning = false;
           const winningItem = items[randomSlice];
-
-          let winText = winningItem.label === "Better Luck Next Time"
-            ? "💔 Better Luck Next Time!"
-            : `🎉 You Won: FREE ${winningItem.label}! (Attached to your next WhatsApp order)`;
+          
+          let winText = "";
+          if (winningItem.label === "Better Luck Next Time") {
+            winText = "💔 Better Luck Next Time!";
+          } else {
+            winText = `🎉 You Won: FREE ${winningItem.label}! (Attached to your next WhatsApp order)`;
+          }
 
           resultMsg.innerText = winText;
 
-          // Lock future spins permanently on browser
+          // Save state to prevent multiple spins
           localStorage.setItem('hasUserSpun', 'true');
           localStorage.setItem('spinResultMsg', winText);
           spinBtn.style.display = 'none';
@@ -436,10 +283,7 @@
 
     spinBtn.addEventListener('click', spin);
 
-    closeBtn.addEventListener('click', () => {
-      spinModal.style.display = 'none';
-    });
-
+    // Initial Setup
     drawWheel();
     checkSpinStatus();
   </script>
