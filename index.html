@@ -43,7 +43,7 @@
     .brand h1 { font-size: 22px; color: var(--primary-gold); font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
     .brand p { font-size: 11px; color: var(--text-muted); font-style: italic; }
 
-    .header-actions { display: flex; gap: 8px; }
+    .header-actions { display: flex; gap: 8px; align-items: center; }
     .btn-gold {
       background: linear-gradient(135deg, var(--primary-gold), #aa7c11);
       color: #111;
@@ -56,6 +56,19 @@
       transition: all 0.3s;
     }
     .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary-gold);
+      border: 1px solid var(--primary-gold);
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-outline:hover { background: var(--primary-gold); color: #111; }
 
     .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
 
@@ -90,7 +103,7 @@
     
     .combo-select-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
     
-    select {
+    select, input {
       width: 100%;
       padding: 9px;
       background-color: #1a1612 !important;
@@ -99,7 +112,6 @@
       border-radius: 8px;
       outline: none;
       font-size: 12px;
-      cursor: pointer;
     }
 
     /* Category Buttons */
@@ -236,6 +248,10 @@
       min-height: 24px;
       line-height: 1.4;
     }
+
+    /* Form Styles for Login Modal */
+    .form-group { text-align: left; margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
   </style>
 </head>
 <body>
@@ -246,6 +262,7 @@
       <p>Gourmet Snacks & Smart WhatsApp Dining</p>
     </div>
     <div class="header-actions">
+      <button class="btn-outline" id="loginHeaderBtn" onclick="openLoginModal()">🔑 Login</button>
       <button class="btn-gold" onclick="openSpinModal()">🎡 Spin & Win</button>
     </div>
   </header>
@@ -303,6 +320,26 @@
     </div>
 
     <div id="menu-container"></div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-card">
+      <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+      <div class="modal-title">🔑 Customer Login</div>
+      <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">Enter your details to save address & track orders!</p>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="loginName" placeholder="Enter your name">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="loginPhone" placeholder="Enter mobile number">
+      </div>
+
+      <button class="btn-gold" style="width:100%; margin-top:10px; padding:10px;" onclick="handleLogin()">LOGIN / SAVE</button>
+    </div>
   </div>
 
   <!-- Real Interactive Canvas Wheel Modal -->
@@ -393,7 +430,7 @@
         imageUrl: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&q=80",
         veg: true
       },
-      /* --- Non-Veg Menu Section Added --- */
+      /* --- Non-Veg Menu Section --- */
       {
         id: 8,
         name: "Egg Chop (2 Pcs)",
@@ -509,6 +546,39 @@
       }
     }
 
+    /* Login Handling */
+    function openLoginModal() {
+      document.getElementById('loginModal').style.display = 'flex';
+      const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      if (user.name) document.getElementById('loginName').value = user.name;
+      if (user.phone) document.getElementById('loginPhone').value = user.phone;
+    }
+
+    function handleLogin() {
+      const name = document.getElementById('loginName').value.trim();
+      const phone = document.getElementById('loginPhone').value.trim();
+
+      if (!name || !phone) {
+        alert('Please fill in both Name and Phone Number.');
+        return;
+      }
+
+      localStorage.setItem('currentUser', JSON.stringify({ name, phone }));
+      updateLoginButton();
+      closeModal('loginModal');
+      alert(`Welcome, ${name}! Your details have been saved.`);
+    }
+
+    function updateLoginButton() {
+      const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const btn = document.getElementById('loginHeaderBtn');
+      if (user.name) {
+        btn.innerText = `👤 ${user.name.split(' ')[0]}`;
+      } else {
+        btn.innerText = `🔑 Login`;
+      }
+    }
+
     function directOrder(itemName, price, itemId) {
       let customText = '';
       const spiceElem = document.getElementById(`spice_${itemId}`);
@@ -516,7 +586,10 @@
 
       let couponText = appliedCoupon ? `\n- Reward Won: *${appliedCoupon}*` : '';
 
-      const message = `*NEW ORDER - ROYAL HERITAGE*\n\n- *Item:* ${itemName}${customText}\n- *Amount:* ₹${price}${couponText}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      let userText = user.name ? `\n- Customer: ${user.name} (${user.phone})` : '';
+
+      const message = `*NEW ORDER - ROYAL HERITAGE*${userText}\n\n- *Item:* ${itemName}${customText}\n- *Amount:* ₹${price}${couponText}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
       
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
@@ -524,12 +597,18 @@
     function orderCustomCombo() {
       const snack = document.getElementById('comboSnack').value;
       const beverage = document.getElementById('comboBeverage').value;
-      const message = `*NEW COMBO ORDER (₹119)*\n\n- *Snack:* ${snack}\n- *Beverage:* ${beverage}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      let userText = user.name ? `\n- Customer: ${user.name} (${user.phone})` : '';
+
+      const message = `*NEW COMBO ORDER (₹119)*${userText}\n\n- *Snack:* ${snack}\n- *Beverage:* ${beverage}\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
     function orderMysteryBox() {
-      const message = `*MYSTERY SURPRISE BOX ORDER (₹129)*\n\n- *Selection:* Chef's Special Surprise Box\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
+      const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      let userText = user.name ? `\n- Customer: ${user.name} (${user.phone})` : '';
+
+      const message = `*MYSTERY SURPRISE BOX ORDER (₹129)*${userText}\n\n- *Selection:* Chef's Special Surprise Box\n\n-------------------------\n*Delivery Address:* \n*(Please type your address here)*`;
       window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
@@ -640,7 +719,9 @@
       }, 4000);
     }
 
+    // Initial setup
     renderMenu(menuItems);
+    updateLoginButton();
   </script>
 </body>
 </html>
